@@ -1,5 +1,7 @@
 import apiRequest from "./index";
 
+import { CreateTodoData } from "../@types/todo";
+
 const RESOURCE = "/todos";
 
 export const getTodoList = async () => {
@@ -12,7 +14,7 @@ export const getTodoList = async () => {
   }
 };
 
-export const createTodo = async (data) => {
+export const createTodo = async (data: CreateTodoData) => {
   try {
     const response = await apiRequest.post(`${RESOURCE}`, data);
 
@@ -22,7 +24,7 @@ export const createTodo = async (data) => {
   }
 };
 
-export const deleteTodo = async (id) => {
+export const deleteTodo = async (id: string) => {
   try {
     const response = await apiRequest.delete(`${RESOURCE}/${id}`);
 

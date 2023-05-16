@@ -1,9 +1,18 @@
-import { FaSpinner, FaTrash } from "react-icons/fa";
 import { useCallback, useState } from "react";
+
+import { FaSpinner, FaTrash } from "react-icons/fa";
 
 import { deleteTodo } from "../api/todo";
 
-const TodoItem = ({ id, title, setTodos }) => {
+import { TodoType } from "../@types/todo";
+
+type TodoItemProps = {
+  id: string;
+  title: string;
+  setTodos: any;
+}
+
+const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRemoveTodo = useCallback(async () => {
@@ -11,7 +20,7 @@ const TodoItem = ({ id, title, setTodos }) => {
       setIsLoading(true);
       await deleteTodo(id);
 
-      setTodos((prev) => prev.filter((item) => item.id !== id));
+      setTodos((prev: any) => prev.filter((item: TodoType) => item.id !== id));
     } catch (error) {
       console.error(error);
       alert("Something went wrong.");
@@ -25,7 +34,7 @@ const TodoItem = ({ id, title, setTodos }) => {
       <span>{title}</span>
       <div className="item-option">
         {!isLoading ? (
-          <button onClick={() => handleRemoveTodo()}>
+          <button type="button" onClick={() => handleRemoveTodo()}>
             <FaTrash className="btn-trash" />
           </button>
         ) : (
