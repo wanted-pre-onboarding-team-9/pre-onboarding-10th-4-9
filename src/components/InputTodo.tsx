@@ -60,7 +60,6 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
     },
     [inputText, setTodos],
   );
-
   return (
     <form className="form-container" onSubmit={handleSubmit}>
       <input

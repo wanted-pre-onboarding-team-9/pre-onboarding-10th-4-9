@@ -2,8 +2,8 @@ import { useSearchState } from '../context/SearchContext';
 import DropdownItem from './DropdownItem';
 
 const Dropdown = () => {
-  const { suggestions, activeIndex, isSuggestions } = useSearchState();
-  if (!isSuggestions) return null;
+  const { suggestions, activeIndex } = useSearchState();
+  if (suggestions.length === 0) return null;
 
   return (
     <ul>

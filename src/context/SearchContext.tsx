@@ -8,7 +8,6 @@ interface SearchState {
   inputText: string;
   suggestions: string[];
   activeIndex: number;
-  isSuggestions: boolean;
   isLoading: boolean;
 }
 
@@ -17,26 +16,22 @@ interface SearchDispatcher {
   selectedSuggestion: (itemIndex: number) => void;
   hoverSuggestion: (itemIndex: number) => void;
   inactivate: () => void;
-  changeLoading: (loadingState: boolean) => void;
 }
 
 const SearchContext = createContext<SearchState | null>(null);
 const SearchDispatchContext = createContext<SearchDispatcher | null>(null);
 
 export const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { suggestions, changeKeyword, isSuggestions } = useSuggestions();
+  const { suggestions, changeKeyword, isLoading } = useSuggestions();
   const [inputText, setInputText] = useState<string>('');
   const [activeIndex, setActiveIndex] = useState(START_ACTIVE_INDEX);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const debouncedWord = useDebounce<string>(inputText.trim(), DEBOUNCE_DELAY_IN_MS);
   const inactivate = () => setActiveIndex(START_ACTIVE_INDEX);
   const hoverSuggestion = (itemIndex: number) => setActiveIndex(itemIndex);
 
   useEffect(() => {
-    setIsLoading(true);
     (async () => changeKeyword(debouncedWord))();
-    setIsLoading(false);
   }, [debouncedWord]);
 
   const changeInputText = (keyword: string) => {
@@ -46,13 +41,10 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
   const selectedSuggestion = (itemIndex: number) => {
     setActiveIndex(itemIndex);
   };
-  const changeLoading = (loadingState: boolean) => {
-    setIsLoading(loadingState);
-  };
 
   const searchContextValue = useMemo(() => {
-    return { inputText, activeIndex, suggestions, isSuggestions, isLoading };
-  }, [inputText, activeIndex, suggestions, isSuggestions, isLoading]);
+    return { inputText, activeIndex, suggestions, isLoading };
+  }, [inputText, activeIndex, suggestions, isLoading]);
 
   const searchDispatchContextValue = useMemo(() => {
     return {
@@ -60,9 +52,8 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
       inactivate,
       selectedSuggestion,
       hoverSuggestion,
-      changeLoading,
     };
-  }, [changeInputText, inactivate, selectedSuggestion, hoverSuggestion, changeLoading]);
+  }, [changeInputText, inactivate, selectedSuggestion, hoverSuggestion]);
 
   return (
     <SearchContext.Provider value={searchContextValue}>

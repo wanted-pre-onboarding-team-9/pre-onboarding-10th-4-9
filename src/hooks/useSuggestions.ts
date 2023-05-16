@@ -4,25 +4,24 @@ import getSuggestions from '../api/search';
 type UseSuggestionsOutput = {
   suggestions: string[];
   changeKeyword: (keyword: string) => Promise<void>;
-  isSuggestions: boolean;
+  isLoading: boolean;
 };
 
 const useSuggestions = (): UseSuggestionsOutput => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [isSuggestions, setIsSuggestions] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const clearSuggestions = () => setSuggestions([]);
   const changeKeyword = async (keyword: string) => {
     if (keyword === '') {
-      clearSuggestions();
-      setIsSuggestions(false);
+      setSuggestions([]);
     } else {
-      const sugggestions = await await getSuggestions({ q: keyword });
+      setIsLoading(true);
+      const sugggestions = await getSuggestions({ q: keyword, page: 1 });
       setSuggestions(sugggestions.result);
-      setIsSuggestions(true);
+      setIsLoading(false);
     }
   };
-  return { suggestions, changeKeyword, isSuggestions };
+  return { suggestions, changeKeyword, isLoading };
 };
 
 export default useSuggestions;
