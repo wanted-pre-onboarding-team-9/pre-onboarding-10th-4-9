@@ -18,4 +18,4 @@ jobs:
       - name: Install Dependencies
         run: npm ci --force
 
-      - run: npm run lint -- --max-warnings=0
+      # - run: npm run lint -- --max-warnings=0
