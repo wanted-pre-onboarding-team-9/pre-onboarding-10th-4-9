@@ -10,6 +10,7 @@ import { createTodo } from '../api/todo';
 import useFocus from '../hooks/useFocus';
 
 import { TodoType } from '../@types/todo';
+import getSuggestions from '../api/search';
 
 type InputTodoProps = {
   setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
@@ -23,6 +24,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   useEffect(() => {
     setFocus();
   }, [setFocus]);
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputText(e.target.value);
+    getSuggestions({ q: e.target.value });
+  };
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,7 +67,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         placeholder="Add new todo..."
         ref={ref}
         value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
+        onChange={onChange}
         disabled={isLoading}
       />
       {!isLoading ? (
