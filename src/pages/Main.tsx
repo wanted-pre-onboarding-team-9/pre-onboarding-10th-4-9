@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import InputTodo from '../components/InputTodo';
 import TodoList from '../components/TodoList';
+import Dropdown from '../components/Dropdown';
+import { SearchContextProvider } from '../context/SearchContext';
 
 import { getTodoList } from '../api/todo';
 
 import { TodoType } from '../@types/todo';
-import Dropdown from '../components/Dropdown';
 
 const Main = () => {
   const [todoListData, setTodoListData] = useState<TodoType[]>([]);
@@ -21,12 +22,14 @@ const Main = () => {
 
   return (
     <div className="container">
-      <div className="inner">
-        <Header />
-        <InputTodo setTodos={setTodoListData} />
-        <Dropdown />
-        <TodoList todos={todoListData} setTodos={setTodoListData} />
-      </div>
+      <SearchContextProvider>
+        <div className="inner">
+          <Header />
+          <InputTodo setTodos={setTodoListData} />
+          <Dropdown />
+          <TodoList todos={todoListData} setTodos={setTodoListData} />
+        </div>
+      </SearchContextProvider>
     </div>
   );
 };
