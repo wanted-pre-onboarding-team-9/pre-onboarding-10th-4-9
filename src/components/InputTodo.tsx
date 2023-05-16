@@ -13,7 +13,7 @@ import { TodoType } from '../@types/todo';
 
 type InputTodoProps = {
   setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-}
+};
 
 const InputTodo = ({ setTodos }: InputTodoProps) => {
   const [inputText, setInputText] = useState('');
@@ -49,7 +49,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         setIsLoading(false);
       }
 
-      return undefined
+      return undefined;
     },
     [inputText, setTodos],
   );
