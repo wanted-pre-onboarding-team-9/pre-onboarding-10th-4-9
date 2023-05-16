@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   line-height: 1.4;
   color: #444;
   background: #fff;
@@ -148,4 +148,13 @@ body {
   width: 100%;
   padding: 10px;
   border: 1px solid #dfdfdf;
+}
+
+.active {
+  color: red;
+  background-color: blue;
+}
+.active:active {
+  color: white;
+  background-color: blue;
 }

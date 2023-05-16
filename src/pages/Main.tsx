@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import InputTodo from '../components/InputTodo';
 import TodoList from '../components/TodoList';
+import Dropdown from '../components/Dropdown';
+import { SearchContextProvider } from '../context/SearchContext';
 
 import { getTodoList } from '../api/todo';
 
@@ -20,11 +22,14 @@ const Main = () => {
 
   return (
     <div className="container">
-      <div className="inner">
-        <Header />
-        <InputTodo setTodos={setTodoListData} />
-        <TodoList todos={todoListData} setTodos={setTodoListData} />
-      </div>
+      <SearchContextProvider>
+        <div className="inner">
+          <Header />
+          <InputTodo setTodos={setTodoListData} />
+          <Dropdown />
+          <TodoList todos={todoListData} setTodos={setTodoListData} />
+        </div>
+      </SearchContextProvider>
     </div>
   );
 };
