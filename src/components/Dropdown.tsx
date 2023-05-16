@@ -1,12 +1,16 @@
 import { useSearchState } from '../context/SearchContext';
 import DropdownItem from './DropdownItem';
 
-const Dropdown = () => {
+type DropdownProp = {
+  children: React.ReactNode;
+};
+
+const Dropdown = ({ children }: DropdownProp) => {
   const { suggestions, activeIndex } = useSearchState();
   if (suggestions.length === 0) return null;
 
   return (
-    <ul>
+    <ul className="dropdownContainer">
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
         return (
@@ -15,6 +19,7 @@ const Dropdown = () => {
           </DropdownItem>
         );
       })}
+      {children}
     </ul>
   );
 };

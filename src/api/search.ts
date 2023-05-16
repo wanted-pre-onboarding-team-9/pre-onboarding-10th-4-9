@@ -11,7 +11,7 @@ export interface GetSuggestionProps {
 const getSuggestions = async ({ q, page = 1 }: GetSuggestionProps) => {
   try {
     const response = await apiRequest.get(`${RESOURCE}?q=${q}&page=${page}&limit=${LIMIT}`);
-    return response.data;
+    return response;
   } catch (error) {
     throw new Error('API getTodoList error');
   }

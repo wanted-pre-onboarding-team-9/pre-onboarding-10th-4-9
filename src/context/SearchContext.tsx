@@ -9,6 +9,7 @@ interface SearchState {
   suggestions: string[];
   activeIndex: number;
   isLoading: boolean;
+  hasNext: boolean;
 }
 
 interface SearchDispatcher {
@@ -16,13 +17,14 @@ interface SearchDispatcher {
   selectedSuggestion: (itemIndex: number) => void;
   hoverSuggestion: (itemIndex: number) => void;
   inactivate: () => void;
+  moreSuggestion: (keyword: string, nextPage: number) => void;
 }
 
 const SearchContext = createContext<SearchState | null>(null);
 const SearchDispatchContext = createContext<SearchDispatcher | null>(null);
 
 export const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { suggestions, changeKeyword, isLoading } = useSuggestions();
+  const { suggestions, changeKeyword, isLoading, hasNext, moreSuggestion } = useSuggestions();
   const [inputText, setInputText] = useState<string>('');
   const [activeIndex, setActiveIndex] = useState(START_ACTIVE_INDEX);
 
@@ -43,8 +45,8 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
   };
 
   const searchContextValue = useMemo(() => {
-    return { inputText, activeIndex, suggestions, isLoading };
-  }, [inputText, activeIndex, suggestions, isLoading]);
+    return { inputText, activeIndex, suggestions, isLoading, hasNext };
+  }, [inputText, activeIndex, suggestions, isLoading, hasNext]);
 
   const searchDispatchContextValue = useMemo(() => {
     return {
@@ -52,8 +54,9 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
       inactivate,
       selectedSuggestion,
       hoverSuggestion,
+      moreSuggestion,
     };
-  }, [changeInputText, inactivate, selectedSuggestion, hoverSuggestion]);
+  }, [changeInputText, inactivate, selectedSuggestion, hoverSuggestion, moreSuggestion]);
 
   return (
     <SearchContext.Provider value={searchContextValue}>
