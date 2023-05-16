@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import apiRequest from '../api';
+import getSuggestions from '../api/search';
 
 type UseSuggestionsOutput = {
   suggestions: string[];
@@ -17,13 +17,11 @@ const useSuggestions = (): UseSuggestionsOutput => {
       clearSuggestions();
       setIsSuggestions(false);
     } else {
-      const sugggestions = await (await apiRequest.get(keyword)).data;
-
-      setSuggestions(sugggestions);
+      const sugggestions = await await getSuggestions({ q: keyword });
+      setSuggestions(sugggestions.result);
       setIsSuggestions(true);
     }
   };
-
   return { suggestions, changeKeyword, isSuggestions };
 };
 

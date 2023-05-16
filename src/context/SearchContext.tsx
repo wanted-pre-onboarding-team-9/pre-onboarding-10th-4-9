@@ -16,7 +16,7 @@ interface SearchDispatcher {
   selectedSuggestion: (itemIndex: number) => void;
   hoverSuggestion: (itemIndex: number) => void;
   inactivate: () => void;
-  active: (selectedSuggestion: string) => void;
+  activate: (selectedSuggestion: string) => void;
   changeLoading: (loadingState: boolean) => void;
 }
 
@@ -31,7 +31,7 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
 
   const debouncedWord = useDebounce<string>(inputText.trim(), DEBOUNCE_DELAY_IN_MS);
   const inactivate = () => setActiveIndex(START_ACTIVE_INDEX);
-  const active = (selectedSuggestion: string) => setInputText(selectedSuggestion);
+  const activate = (selectedSuggestion: string) => setInputText(selectedSuggestion);
   const hoverSuggestion = (itemIndex: number) => setActiveIndex(itemIndex);
 
   useEffect(() => {
@@ -59,13 +59,13 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
   const searchDispatchContextValue = useMemo(() => {
     return {
       changeInputText,
-      active,
+      activate,
       inactivate,
       selectedSuggestion,
       hoverSuggestion,
       changeLoading,
     };
-  }, [changeInputText, active, inactivate, selectedSuggestion, hoverSuggestion, changeLoading]);
+  }, [changeInputText, activate, inactivate, selectedSuggestion, hoverSuggestion, changeLoading]);
 
   return (
     <SearchContext.Provider value={searchContextValue}>
