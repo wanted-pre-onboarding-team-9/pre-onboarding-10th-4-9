@@ -18,4 +18,4 @@ jobs:
       - name: Install Dependencies
         run: yarn install
 
-      # - run: yarn run lint -- --max-warnings=0
+      - run: yarn run lint -- --max-warnings=0

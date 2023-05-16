@@ -3,8 +3,8 @@ export type CreateTodoData = {
 };
 
 export type TodoType = {
+  id: string;
   title: string;
   createdAt: string;
   updatedAt: string;
-  id: string;
 };

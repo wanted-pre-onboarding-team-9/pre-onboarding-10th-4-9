@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
+
 import { useCallback, useEffect, useState } from 'react';
 
 import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
@@ -6,7 +9,13 @@ import { createTodo } from '../api/todo';
 
 import useFocus from '../hooks/useFocus';
 
-const InputTodo = ({ setTodos }: any) => {
+import { TodoType } from '../@types/todo';
+
+type InputTodoProps = {
+  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
+}
+
+const InputTodo = ({ setTodos }: InputTodoProps) => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
@@ -16,7 +25,6 @@ const InputTodo = ({ setTodos }: any) => {
   }, [setFocus]);
 
   const handleSubmit = useCallback(
-    // eslint-disable-next-line consistent-return
     async (e: React.FormEvent<HTMLFormElement>) => {
       try {
         e.preventDefault();
@@ -31,7 +39,7 @@ const InputTodo = ({ setTodos }: any) => {
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return setTodos((prev: any) => [...prev, data]);
+          return setTodos((prev) => [...prev, data]);
         }
       } catch (error) {
         console.error(error);
@@ -40,6 +48,8 @@ const InputTodo = ({ setTodos }: any) => {
         setInputText('');
         setIsLoading(false);
       }
+
+      return undefined
     },
     [inputText, setTodos],
   );

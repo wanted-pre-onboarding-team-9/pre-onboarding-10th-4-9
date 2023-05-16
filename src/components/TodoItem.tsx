@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-console */
+
 import { useCallback, useState } from 'react';
 
 import { FaSpinner, FaTrash } from 'react-icons/fa';
@@ -9,7 +12,7 @@ import { TodoType } from '../@types/todo';
 type TodoItemProps = {
   id: string;
   title: string;
-  setTodos: any;
+  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 };
 
 const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
@@ -20,7 +23,7 @@ const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
       setIsLoading(true);
       await deleteTodo(id);
 
-      setTodos((prev: any) => prev.filter((item: TodoType) => item.id !== id));
+      setTodos((prev) => prev.filter((item: TodoType) => item.id !== id));
     } catch (error) {
       console.error(error);
       alert('Something went wrong.');

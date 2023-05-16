@@ -6,8 +6,10 @@ import TodoList from '../components/TodoList';
 
 import { getTodoList } from '../api/todo';
 
+import { TodoType } from '../@types/todo';
+
 const Main = () => {
-  const [todoListData, setTodoListData] = useState([]);
+  const [todoListData, setTodoListData] = useState<TodoType[]>([]);
 
   useEffect(() => {
     (async () => {

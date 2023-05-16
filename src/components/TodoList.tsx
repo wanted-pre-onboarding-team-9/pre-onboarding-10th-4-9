@@ -4,7 +4,7 @@ import { TodoType } from '../@types/todo';
 
 type TodoListProps = {
   todos: TodoType[];
-  setTodos: any;
+  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 };
 
 const TodoList = ({ todos, setTodos }: TodoListProps) => {
@@ -18,4 +18,5 @@ const TodoList = ({ todos, setTodos }: TodoListProps) => {
     <div className="empty-list">...</div>
   );
 };
+
 export default TodoList;
