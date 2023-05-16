@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
-import { START_ACTIVE_INDEX } from '../const';
+import { DEBOUNCE_DELAY_IN_MS, START_ACTIVE_INDEX } from '../const';
+import useDebounce from '../hooks/useDebounce';
 
 interface SearchState {
   inputText: string;
@@ -28,15 +29,16 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
   const [activeIndex, setActiveIndex] = useState(START_ACTIVE_INDEX);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const debouncedWord = useDebounce<string>(inputText.trim(), DEBOUNCE_DELAY_IN_MS);
   const inactivate = () => setActiveIndex(START_ACTIVE_INDEX);
   const active = (selectedSuggestion: string) => setInputText(selectedSuggestion);
   const hoverSuggestion = (itemIndex: number) => setActiveIndex(itemIndex);
 
   useEffect(() => {
     setIsLoading(true);
-    (async () => changeKeyword(inputText))();
+    (async () => changeKeyword(debouncedWord))();
     setIsLoading(false);
-  }, [inputText]);
+  }, [debouncedWord]);
 
   const changeInputText = (keyword: string) => {
     setInputText(keyword);
