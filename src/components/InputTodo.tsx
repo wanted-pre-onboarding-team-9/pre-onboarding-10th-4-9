@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 
-import { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { TodoType } from '../@types/todo';
 import { createTodo } from '../api/todo';
@@ -21,13 +21,13 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
     isLoading: isSearchLoading,
     suggestions,
     hasNext,
+    currentPage,
   } = useSearchState();
-  const { changeInputText, moreSuggestion } = useSearchDispatch();
+  const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
 
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
-  const [page, setPage] = useState(INITIAL_PAGE_NUM);
 
   useEffect(() => {
     setFocus();
@@ -68,8 +68,19 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   );
 
   const moreSearch = () => {
-    setPage((prev) => prev + 1);
-    moreSuggestion(searchInputText, page + 1);
+    if (hasNext && !isSearchLoading) {
+      setCurrentPage();
+      moreSuggestion(searchInputText, currentPage + 1);
+    }
+  };
+
+  const checkScroll = () => {
+    const dropDownUL = document.querySelector('.dropdownContainer');
+
+    if (dropDownUL) {
+      const isScrollEnd = dropDownUL.scrollTop + dropDownUL.clientHeight >= dropDownUL.scrollHeight;
+      if (isScrollEnd) moreSearch();
+    }
   };
 
   return (
@@ -86,23 +97,8 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
       </form>
 
       {suggestions.length !== 0 && (
-        <Dropdown>
-          {hasNext &&
-            (isSearchLoading ? (
-              <div>Loading</div>
-            ) : (
-              <div>
-                More
-                <button
-                  type="button"
-                  onClick={() => {
-                    moreSearch();
-                  }}
-                >
-                  More 테스트버튼
-                </button>
-              </div>
-            ))}
+        <Dropdown onWheel={checkScroll}>
+          {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
         </Dropdown>
       )}
     </div>
