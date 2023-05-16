@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 
-import { FaPlusCircle, FaSpinner } from "react-icons/fa";
+import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
 
-import { createTodo } from "../api/todo";
+import { createTodo } from '../api/todo';
 
-import useFocus from "../hooks/useFocus";
+import useFocus from '../hooks/useFocus';
 
 const InputTodo = ({ setTodos }: any) => {
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
 
@@ -24,7 +24,7 @@ const InputTodo = ({ setTodos }: any) => {
 
         const trimmed = inputText.trim();
         if (!trimmed) {
-          return alert("Please write something");
+          return alert('Please write something');
         }
 
         const newItem = { title: trimmed };
@@ -35,9 +35,9 @@ const InputTodo = ({ setTodos }: any) => {
         }
       } catch (error) {
         console.error(error);
-        alert("Something went wrong.");
+        alert('Something went wrong.');
       } finally {
-        setInputText("");
+        setInputText('');
         setIsLoading(false);
       }
     },

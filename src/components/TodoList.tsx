@@ -1,11 +1,11 @@
-import TodoItem from "./TodoItem";
+import TodoItem from './TodoItem';
 
-import { TodoType } from "../@types/todo";
+import { TodoType } from '../@types/todo';
 
 type TodoListProps = {
   todos: TodoType[];
   setTodos: any;
-}
+};
 
 const TodoList = ({ todos, setTodos }: TodoListProps) => {
   return todos.length ? (

@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import Header from "../components/Header";
-import InputTodo from "../components/InputTodo";
-import TodoList from "../components/TodoList";
+import Header from '../components/Header';
+import InputTodo from '../components/InputTodo';
+import TodoList from '../components/TodoList';
 
-import { getTodoList } from "../api/todo";
+import { getTodoList } from '../api/todo';
 
 const Main = () => {
   const [todoListData, setTodoListData] = useState([]);

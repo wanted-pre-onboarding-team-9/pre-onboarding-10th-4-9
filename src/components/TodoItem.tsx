@@ -1,16 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
-import { FaSpinner, FaTrash } from "react-icons/fa";
+import { FaSpinner, FaTrash } from 'react-icons/fa';
 
-import { deleteTodo } from "../api/todo";
+import { deleteTodo } from '../api/todo';
 
-import { TodoType } from "../@types/todo";
+import { TodoType } from '../@types/todo';
 
 type TodoItemProps = {
   id: string;
   title: string;
   setTodos: any;
-}
+};
 
 const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ const TodoItem = ({ id, title, setTodos }: TodoItemProps) => {
       setTodos((prev: any) => prev.filter((item: TodoType) => item.id !== id));
     } catch (error) {
       console.error(error);
-      alert("Something went wrong.");
+      alert('Something went wrong.');
     } finally {
       setIsLoading(false);
     }
