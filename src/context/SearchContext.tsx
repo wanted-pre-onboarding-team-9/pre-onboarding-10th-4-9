@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
-import { DEBOUNCE_DELAY_IN_MS, START_ACTIVE_INDEX } from '../const';
 import useDebounce from '../hooks/useDebounce';
 
+const START_ACTIVE_INDEX = -1;
+const DEBOUNCE_DELAY_IN_MS = 500;
 interface SearchState {
   inputText: string;
   suggestions: string[];
