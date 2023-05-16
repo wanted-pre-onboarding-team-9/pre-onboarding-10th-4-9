@@ -7,6 +7,7 @@ import TodoList from '../components/TodoList';
 import { getTodoList } from '../api/todo';
 
 import { TodoType } from '../@types/todo';
+import Dropdown from '../components/Dropdown';
 
 const Main = () => {
   const [todoListData, setTodoListData] = useState<TodoType[]>([]);
@@ -23,6 +24,7 @@ const Main = () => {
       <div className="inner">
         <Header />
         <InputTodo setTodos={setTodoListData} />
+        <Dropdown />
         <TodoList todos={todoListData} setTodos={setTodoListData} />
       </div>
     </div>
