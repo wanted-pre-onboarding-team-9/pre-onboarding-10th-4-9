@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
 import useDebounce from '../hooks/useDebounce';
 import { INITIAL_PAGE_NUM } from '../components/InputTodo';
@@ -53,23 +53,19 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
     setCurrentPage((prev) => prev + 1);
   };
 
-  const searchContextValue = useMemo(() => {
-    return { inputText, activeIndex, suggestions, isLoading, hasNext, currentPage };
-  }, [inputText, activeIndex, suggestions, isLoading, hasNext, currentPage]);
-
-  const searchDispatchContextValue = useMemo(() => {
-    return {
-      changeInputText,
-      inactivate,
-      selectedSuggestion,
-      hoverSuggestion,
-      goToNextPage,
-    };
-  }, [changeInputText, inactivate, selectedSuggestion, hoverSuggestion, goToNextPage]);
-
   return (
-    <SearchContext.Provider value={searchContextValue}>
-      <SearchDispatchContext.Provider value={searchDispatchContextValue}>
+    <SearchContext.Provider
+      value={{ inputText, activeIndex, suggestions, isLoading, hasNext, currentPage }}
+    >
+      <SearchDispatchContext.Provider
+        value={{
+          changeInputText,
+          inactivate,
+          selectedSuggestion,
+          hoverSuggestion,
+          goToNextPage,
+        }}
+      >
         {children}
       </SearchDispatchContext.Provider>
     </SearchContext.Provider>

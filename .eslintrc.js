@@ -22,6 +22,7 @@ module.exports = {
         unnamedComponents: 'arrow-function',
       },
     ],
+    'react/jsx-no-constructed-context-values': 'off',
   },
   settings: {
     'import/resolver': {

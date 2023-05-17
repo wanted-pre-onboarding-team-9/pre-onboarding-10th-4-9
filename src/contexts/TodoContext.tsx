@@ -1,7 +1,6 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-shadow */
 
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { TodoType } from '../@types/todo';
 
 interface TodoState {
@@ -30,17 +29,9 @@ const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
     setTodos(todos);
   };
 
-  const todoContextValue = useMemo(() => {
-    return { todoText, todos };
-  }, [todoText, todos]);
-
-  const todoDispatchContextValue = useMemo(() => {
-    return { changeInputText, changeTodos, setTodos };
-  }, [changeInputText, changeTodos, setTodos]);
-
   return (
-    <TodoStateContext.Provider value={todoContextValue}>
-      <TodosDispatchContext.Provider value={todoDispatchContextValue}>
+    <TodoStateContext.Provider value={{ todoText, todos }}>
+      <TodosDispatchContext.Provider value={{ changeInputText, changeTodos, setTodos }}>
         {children}
       </TodosDispatchContext.Provider>
     </TodoStateContext.Provider>
