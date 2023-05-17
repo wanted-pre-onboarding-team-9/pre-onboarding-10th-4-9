@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AxiosError } from 'axios';
-import { FaSpinner } from 'react-icons/fa';
+import { TbLoader2 } from 'react-icons/tb';
 import { FiSearch } from 'react-icons/fi';
 import { RxDotsHorizontal } from 'react-icons/rx';
 import { createTodo } from '../api/todo';
@@ -95,13 +95,13 @@ const InputTodo = () => {
           }}
           disabled={isLoading}
         />
-        {currentPage === 1 && isSearchLoading && <FaSpinner className="input-icon spinner" />}
+        {currentPage === 1 && isSearchLoading && <TbLoader2 className="input-icon spinner" />}
       </form>
 
       <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
         {hasNext &&
           (isSearchLoading ? (
-            <FaSpinner className="input-icon spinner" />
+            <TbLoader2 className="input-icon spinner" />
           ) : (
             <RxDotsHorizontal className="input-icon" />
           ))}
