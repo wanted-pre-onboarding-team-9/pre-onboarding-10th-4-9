@@ -10,7 +10,12 @@ const baseInstance = axios.create({
   },
 });
 
-baseInstance.interceptors.response.use(({ data }) => data);
+baseInstance.interceptors.response.use(
+  ({ data }) => data,
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 const apiRequest = {
   get: (...args: Parameters<Axios['get']>) => baseInstance.get(...args),
