@@ -14,7 +14,6 @@ const InputTodo = () => {
   const {
     inputText: searchInputText,
     isLoading: isSearchLoading,
-    suggestions,
     hasNext,
     currentPage,
   } = useSearchState();
