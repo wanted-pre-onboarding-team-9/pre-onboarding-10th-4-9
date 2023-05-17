@@ -1,24 +1,30 @@
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
 import Header from '../components/Header';
 import InputTodo from '../components/InputTodo';
 import TodoList from '../components/TodoList';
-import Dropdown from '../components/Dropdown';
 import { SearchContextProvider } from '../contexts/SearchContext';
+import ErrorModal from '../components/ErrorModal';
 
 import { getTodoList } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
-import { useErrorState } from '../contexts/ErrorContext';
-import ErrorModal from '../components/ErrorModal';
+import { useErrorDispatch, useErrorState } from '../contexts/ErrorContext';
 
 const Main = () => {
   const dispatch = useTodosDispatch();
-  const { error } = useErrorState();
+  const { hasError } = useErrorState();
+  const { showError } = useErrorDispatch();
 
   useEffect(() => {
     (async () => {
-      const { data } = await getTodoList();
-      dispatch.changeTodos(data || []);
+      try {
+        const { data } = await getTodoList();
+        dispatch.changeTodos(data || []);
+      } catch (error) {
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
+      }
     })();
   }, []);
 
@@ -31,7 +37,7 @@ const Main = () => {
           <TodoList />
         </div>
       </SearchContextProvider>
-      {error && <ErrorModal />}
+      {hasError && <ErrorModal />}
     </div>
   );
 };

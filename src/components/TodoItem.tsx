@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
 
 import { FaSpinner, FaTrash } from 'react-icons/fa';
@@ -25,7 +26,8 @@ const TodoItem = ({ id, title }: TodoItemProps) => {
 
       dispatch.setTodos((prev: TodoType[]) => prev.filter((item: TodoType) => item.id !== id));
     } catch (error) {
-      showError('Something went wrong.');
+      const { response } = error as unknown as AxiosError;
+      showError(response?.data.message);
     } finally {
       setIsLoading(false);
     }

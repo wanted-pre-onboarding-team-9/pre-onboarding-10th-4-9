@@ -1,12 +1,13 @@
+import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createTodo } from '../api/todo';
-import useFocus from '../hooks/useFocus';
-import { TodoType } from '../@types/todo';
+import Dropdown from './Dropdown';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
-
-import Dropdown from './Dropdown';
 import { useErrorDispatch } from '../contexts/ErrorContext';
+
+import useFocus from '../hooks/useFocus';
+import { TodoType } from '../@types/todo';
+import { createTodo } from '../api/todo';
 
 export const INITIAL_PAGE_NUM = 1;
 
@@ -54,7 +55,8 @@ const InputTodo = () => {
           return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
         }
       } catch (error) {
-        showError('Something went wrong.');
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
       } finally {
         setInputText('');
         setIsLoading(false);
