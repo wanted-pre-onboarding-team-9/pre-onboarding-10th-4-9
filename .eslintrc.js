@@ -4,6 +4,7 @@ module.exports = {
   extends: ['airbnb', 'plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
   rules: {
     'prettier/prettier': 0,
+    'no-alert': 'off',
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
     'import/extensions': [
       'error',

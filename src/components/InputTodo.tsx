@@ -10,6 +10,9 @@ import useFocus from '../hooks/useFocus';
 
 import Dropdown from './Dropdown';
 
+import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
+import { useTodosDispatch } from '../contexts/TodoContext';
+
 type InputTodoProps = {
   setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 };
@@ -24,11 +27,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
     currentPage,
   } = useSearchState();
   const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
-
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
+  const dispatch = useTodosDispatch();
 
   useEffect(() => {
     setFocus();
@@ -51,10 +54,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         }
 
         const newItem = { title: trimmed };
+
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return setTodos((prev) => [...prev, data]);
+          return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
         }
       } catch (error) {
         console.error(error);
@@ -66,7 +70,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
 
       return undefined;
     },
-    [inputText, setTodos],
+    [inputText, dispatch.setTodos],
   );
 
   const moreSearch = () => {
@@ -96,7 +100,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
           placeholder="Add new todo..."
           ref={ref}
           value={inputText || searchInputText}
-          onChange={onChange}
+          onChange={(e) => {
+          setInputText(e.target.value);
+          dispatch.changeInputText(e.target.value);
+          onChange(e);
+        }}
           disabled={isLoading}
         />
       </form>
