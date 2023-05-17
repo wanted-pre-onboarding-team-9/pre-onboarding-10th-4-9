@@ -1,28 +1,26 @@
-import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import Dropdown from './Dropdown';
+import { AxiosError } from 'axios';
+import { FaSpinner } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
+import { RxDotsHorizontal } from 'react-icons/rx';
+import { createTodo } from '../api/todo';
+import useFocus from '../hooks/useFocus';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
+import Dropdown from './Dropdown';
 
-import useFocus from '../hooks/useFocus';
-import { TodoType } from '../@types/todo';
-import { createTodo } from '../api/todo';
+import '../styles/InputTodo.css';
 
 export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
-  const {
-    inputText,
-    isLoading: isSearchLoading,
-    hasNext,
-    currentPage,
-  } = useSearchState();
-  const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
+  const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
+  const { changeInputText, goToNextPage } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
-  const dispatch = useTodosDispatch();
+  const { addTodo } = useTodosDispatch();
   const { showError } = useErrorDispatch();
 
   useEffect(() => {
@@ -49,7 +47,7 @@ const InputTodo = () => {
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
+          return addTodo(data);
         }
       } catch (error) {
         const { response } = error as unknown as AxiosError;
@@ -61,13 +59,12 @@ const InputTodo = () => {
 
       return undefined;
     },
-    [inputText, dispatch.setTodos],
+    [inputText, addTodo],
   );
 
   const moreSearch = () => {
     if (hasNext && !isSearchLoading) {
-      setCurrentPage();
-      moreSuggestion(inputText, currentPage + 1);
+      goToNextPage();
     }
   };
 
@@ -84,8 +81,9 @@ const InputTodo = () => {
   };
 
   return (
-    <div>
+    <div className="input-todo-container">
       <form className="form-container" onSubmit={handleSubmit}>
+        <FiSearch className="input-icon" />
         <input
           className="input-text"
           placeholder="Add new todo..."
@@ -93,15 +91,20 @@ const InputTodo = () => {
           value={inputText}
           onChange={(e) => {
             changeInputText(e.target.value);
-            dispatch.changeInputText(e.target.value);
             onChange(e);
           }}
           disabled={isLoading}
         />
+        {currentPage === 1 && isSearchLoading && <FaSpinner className="input-icon spinner" />}
       </form>
 
       <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
-        {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
+        {hasNext &&
+          (isSearchLoading ? (
+            <FaSpinner className="input-icon spinner" />
+          ) : (
+            <RxDotsHorizontal className="input-icon" />
+          ))}
       </Dropdown>
     </div>
   );

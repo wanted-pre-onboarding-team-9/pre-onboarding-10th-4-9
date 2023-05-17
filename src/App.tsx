@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/App.css';
 import { ErrorContextProvider } from './contexts/ErrorContext';
 
 import Main from './pages/Main';

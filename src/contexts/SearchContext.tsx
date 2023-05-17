@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
 import useDebounce from '../hooks/useDebounce';
 import { INITIAL_PAGE_NUM } from '../components/InputTodo';
@@ -6,6 +6,7 @@ import { INITIAL_PAGE_NUM } from '../components/InputTodo';
 const START_ACTIVE_INDEX = -2;
 
 const DEBOUNCE_DELAY_IN_MS = 500;
+
 interface SearchState {
   inputText: string;
   suggestions: string[];
@@ -19,55 +20,47 @@ interface SearchDispatcher {
   changeInputText: (keyword: string) => void;
   hoverSuggestion: (itemIndex: number) => void;
   inactivate: () => void;
-  moreSuggestion: (keyword: string, nextPage: number) => void;
-  setCurrentPage: () => void;
+  goToNextPage: () => void;
 }
 
 const SearchContext = createContext<SearchState | null>(null);
 const SearchDispatchContext = createContext<SearchDispatcher | null>(null);
 
 export const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const { suggestions, changeKeyword, isLoading, hasNext, moreSuggestion } = useSuggestions();
   const [inputText, setInputText] = useState<string>('');
   const [activeIndex, setActiveIndex] = useState(START_ACTIVE_INDEX);
-  const [currentPage, setPage] = useState(INITIAL_PAGE_NUM);
+  const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUM);
 
   const debouncedWord = useDebounce<string>(inputText.trim(), DEBOUNCE_DELAY_IN_MS);
+  const { suggestions, isLoading, hasNext } = useSuggestions(debouncedWord, currentPage);
+
   const inactivate = () => setActiveIndex(START_ACTIVE_INDEX);
   const hoverSuggestion = (itemIndex: number) => setActiveIndex(itemIndex);
 
   useEffect(() => {
-    (async () => {
-      changeKeyword(debouncedWord);
-      setPage(INITIAL_PAGE_NUM);
-    })();
+    setCurrentPage(INITIAL_PAGE_NUM);
   }, [debouncedWord]);
 
   const changeInputText = (keyword: string) => {
     setInputText(keyword);
   };
 
-  const setCurrentPage = () => {
-    setPage((prev) => prev + 1);
+  const goToNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
   };
 
-  const searchContextValue = useMemo(() => {
-    return { inputText, activeIndex, suggestions, isLoading, hasNext, currentPage };
-  }, [inputText, activeIndex, suggestions, isLoading, hasNext, currentPage]);
-
-  const searchDispatchContextValue = useMemo(() => {
-    return {
-      changeInputText,
-      inactivate,
-      hoverSuggestion,
-      moreSuggestion,
-      setCurrentPage,
-    };
-  }, [changeInputText, inactivate, hoverSuggestion, moreSuggestion, setCurrentPage]);
-
   return (
-    <SearchContext.Provider value={searchContextValue}>
-      <SearchDispatchContext.Provider value={searchDispatchContextValue}>
+    <SearchContext.Provider
+      value={{ inputText, activeIndex, suggestions, isLoading, hasNext, currentPage }}
+    >
+      <SearchDispatchContext.Provider
+        value={{
+          changeInputText,
+          inactivate,
+          hoverSuggestion,
+          goToNextPage,
+        }}
+      >
         {children}
       </SearchDispatchContext.Provider>
     </SearchContext.Provider>

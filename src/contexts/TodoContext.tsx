@@ -1,46 +1,39 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-shadow */
 
-import { createContext, useContext, useState, useMemo } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { TodoType } from '../@types/todo';
 
 interface TodoState {
-  todoText: string;
   todos: TodoType[];
 }
 
-const TodoStateContext = createContext<TodoState | undefined>(undefined);
-
 interface TodoDispatcher {
-  changeInputText: (title: string) => void;
+  addTodo: (todo: TodoType) => void;
+  removeTodo: (id: TodoType['id']) => void;
   changeTodos: (todos: TodoType[]) => void;
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 }
-const TodosDispatchContext = createContext<TodoDispatcher | undefined>(undefined);
+
+const TodoStateContext = createContext<TodoState | null>(null);
+const TodosDispatchContext = createContext<TodoDispatcher | null>(null);
 
 const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [todoText, setTodoText] = useState<string>('');
   const [todos, setTodos] = useState<TodoType[]>([]);
 
-  const changeInputText = (title: string) => {
-    setTodoText(title);
+  const addTodo = (todo: TodoType) => {
+    setTodos((prev) => [...prev, todo]);
+  };
+
+  const removeTodo = (id: TodoType['id']) => {
+    setTodos((prev) => prev.filter((item) => item.id !== id));
   };
 
   const changeTodos = (todos: TodoType[]) => {
     setTodos(todos);
   };
 
-  const todoContextValue = useMemo(() => {
-    return { todoText, todos };
-  }, [todoText, todos]);
-
-  const todoDispatchContextValue = useMemo(() => {
-    return { changeInputText, changeTodos, setTodos };
-  }, [changeInputText, changeTodos, setTodos]);
-
   return (
-    <TodoStateContext.Provider value={todoContextValue}>
-      <TodosDispatchContext.Provider value={todoDispatchContextValue}>
+    <TodoStateContext.Provider value={{ todos }}>
+      <TodosDispatchContext.Provider value={{ addTodo, removeTodo, changeTodos }}>
         {children}
       </TodosDispatchContext.Provider>
     </TodoStateContext.Provider>

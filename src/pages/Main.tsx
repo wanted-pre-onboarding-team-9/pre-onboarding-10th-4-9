@@ -11,8 +11,10 @@ import { getTodoList } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch, useErrorState } from '../contexts/ErrorContext';
 
+import '../styles/Main.css';
+
 const Main = () => {
-  const dispatch = useTodosDispatch();
+  const { changeTodos } = useTodosDispatch();
   const { hasError } = useErrorState();
   const { showError } = useErrorDispatch();
 
@@ -20,7 +22,7 @@ const Main = () => {
     (async () => {
       try {
         const { data } = await getTodoList();
-        dispatch.changeTodos(data || []);
+        changeTodos(data || []);
       } catch (error) {
         const { response } = error as unknown as AxiosError;
         showError(response?.data.message);

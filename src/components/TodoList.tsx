@@ -2,12 +2,14 @@ import TodoItem from './TodoItem';
 
 import { useTodosState } from '../contexts/TodoContext';
 
-const TodoList = () => {
-  const todos = useTodosState();
+import '../styles/TodoList.css';
 
-  return todos.todos.length ? (
+const TodoList = () => {
+  const { todos } = useTodosState();
+
+  return todos.length ? (
     <ul>
-      {todos.todos.map(({ id, title }) => (
+      {todos.map(({ id, title }) => (
         <TodoItem key={id} id={id} title={title} />
       ))}
     </ul>
