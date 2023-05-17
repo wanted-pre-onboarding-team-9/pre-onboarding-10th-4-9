@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { useCallback, useState } from 'react';
-import { FaSpinner, FaTrash } from 'react-icons/fa';
-
+import { FaTrash } from 'react-icons/fa';
+import { TbLoader2 } from 'react-icons/tb';
 import { deleteTodo } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
@@ -39,7 +39,7 @@ const TodoItem = ({ id, title }: TodoItemProps) => {
             <FaTrash className="btn-trash" />
           </button>
         ) : (
-          <FaSpinner className="spinner" />
+          <TbLoader2 className="spinner" />
         )}
       </div>
     </li>

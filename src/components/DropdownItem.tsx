@@ -41,7 +41,11 @@ const DropdownItem = ({ index, children: suggestion, isFocus, lastItemRef }: Dro
       {texts.map((text, idx) => {
         const key = text + idx;
         if (keywordRegex.test(text)) {
-          return <span key={key}>{text}</span>;
+          return (
+            <span key={key} className="sugegestion-item-keyword">
+              {text}
+            </span>
+          );
         }
         return <span key={key}>{text}</span>;
       })}
