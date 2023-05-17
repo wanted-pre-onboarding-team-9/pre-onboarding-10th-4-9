@@ -1,5 +1,7 @@
 import { useErrorDispatch, useErrorState } from '../contexts/ErrorContext';
 
+import '../styles/ErrorModal.css';
+
 export const ErrorModal = () => {
   const { error, hasError } = useErrorState();
   const { hideError } = useErrorDispatch();
@@ -8,8 +10,8 @@ export const ErrorModal = () => {
 
   return (
     <dialog className="modal-container" open={hasError}>
-      <h1 className="modal-title">Error</h1>
-      <div className="modal-body">{error}</div>
+      <h1>Error</h1>
+      <div>{error}</div>
       <button type="button" onClick={hideError} className="modal-button">
         닫기
       </button>
