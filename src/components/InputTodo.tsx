@@ -12,13 +12,8 @@ import { createTodo } from '../api/todo';
 export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
-  const {
-    inputText,
-    isLoading: isSearchLoading,
-    hasNext,
-    currentPage,
-  } = useSearchState();
-  const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
+  const { inputText, isLoading: isSearchLoading, hasNext } = useSearchState();
+  const { changeInputText, goToNextPage } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
@@ -66,8 +61,7 @@ const InputTodo = () => {
 
   const moreSearch = () => {
     if (hasNext && !isSearchLoading) {
-      setCurrentPage();
-      moreSuggestion(inputText, currentPage + 1);
+      goToNextPage();
     }
   };
 
