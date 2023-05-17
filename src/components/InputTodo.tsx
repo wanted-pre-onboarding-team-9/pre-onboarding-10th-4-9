@@ -1,12 +1,13 @@
-/* eslint-disable no-console */
+import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { createTodo } from '../api/todo';
-import useFocus from '../hooks/useFocus';
-import { TodoType } from '../@types/todo';
+import Dropdown from './Dropdown';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
+import { useErrorDispatch } from '../contexts/ErrorContext';
 
-import Dropdown from './Dropdown';
+import useFocus from '../hooks/useFocus';
+import { TodoType } from '../@types/todo';
+import { createTodo } from '../api/todo';
 
 export const INITIAL_PAGE_NUM = 1;
 
@@ -23,6 +24,7 @@ const InputTodo = () => {
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
   const dispatch = useTodosDispatch();
+  const { showError } = useErrorDispatch();
 
   useEffect(() => {
     setFocus();
@@ -41,7 +43,7 @@ const InputTodo = () => {
 
         const trimmed = searchInputText ? searchInputText.trim() : inputText.trim();
         if (!trimmed) {
-          return alert('Please write something');
+          return showError('Please write something');
         }
 
         const newItem = { title: trimmed };
@@ -52,8 +54,8 @@ const InputTodo = () => {
           return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
         }
       } catch (error) {
-        console.error(error);
-        alert('Something went wrong.');
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
       } finally {
         setInputText('');
         setIsLoading(false);
