@@ -10,8 +10,9 @@ interface TodoState {
 
 interface TodoDispatcher {
   changeInputText: (title: string) => void;
+  addTodo: (todo: TodoType) => void;
+  removeTodo: (id: TodoType['id']) => void;
   changeTodos: (todos: TodoType[]) => void;
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 }
 
 const TodoStateContext = createContext<TodoState | null>(null);
@@ -25,13 +26,21 @@ const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
     setTodoText(title);
   };
 
+  const addTodo = (todo: TodoType) => {
+    setTodos((prev) => [...prev, todo]);
+  };
+
+  const removeTodo = (id: TodoType['id']) => {
+    setTodos((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const changeTodos = (todos: TodoType[]) => {
     setTodos(todos);
   };
 
   return (
     <TodoStateContext.Provider value={{ todoText, todos }}>
-      <TodosDispatchContext.Provider value={{ changeInputText, changeTodos, setTodos }}>
+      <TodosDispatchContext.Provider value={{ changeInputText, addTodo, removeTodo, changeTodos }}>
         {children}
       </TodosDispatchContext.Provider>
     </TodoStateContext.Provider>
