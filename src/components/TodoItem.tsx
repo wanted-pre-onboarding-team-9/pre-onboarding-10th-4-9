@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useCallback, useState } from 'react';
 
 import { FaSpinner, FaTrash } from 'react-icons/fa';
@@ -7,6 +6,7 @@ import { deleteTodo } from '../api/todo';
 
 import { TodoType } from '../@types/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
+import { useErrorDispatch } from '../contexts/ErrorContext';
 
 type TodoItemProps = {
   id: string;
@@ -16,6 +16,7 @@ type TodoItemProps = {
 const TodoItem = ({ id, title }: TodoItemProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useTodosDispatch();
+  const { showError } = useErrorDispatch();
   const handleRemoveTodo = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -24,8 +25,7 @@ const TodoItem = ({ id, title }: TodoItemProps) => {
 
       dispatch.setTodos((prev: TodoType[]) => prev.filter((item: TodoType) => item.id !== id));
     } catch (error) {
-      console.error(error);
-      alert('Something went wrong.');
+      showError('Something went wrong.');
     } finally {
       setIsLoading(false);
     }
