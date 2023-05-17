@@ -18,14 +18,15 @@ jest.mock('../contexts/ErrorContext', () => ({
   }),
 }));
 
+const TODO = {
+  id: '1',
+  title: 'todo example',
+};
+
 describe('TodoItem', () => {
   it('should render the todo item correctly', () => {
-    const todo = {
-      id: '1',
-      title: 'Buy groceries',
-    };
-    const { getByText } = render(<TodoItem id={todo.id} title={todo.title} />);
+    const { getByText } = render(<TodoItem id={TODO.id} title={TODO.title} />);
 
-    expect(getByText(todo.title)).toBeInTheDocument();
+    expect(getByText(TODO.title)).toBeInTheDocument();
   });
 });
