@@ -16,7 +16,7 @@ const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
 
   if (suggestions.length === 0 && inputText.trim().length > 0) {
     return (
-      <ul className="dropdownContainer" onScroll={onScroll} ref={scrollRef}>
+      <ul className="dropdown-Container" onScroll={onScroll} ref={scrollRef}>
         <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
           {inputText}
         </DropdownItem>
@@ -38,7 +38,7 @@ const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
           </DropdownItem>
         );
       })}
-      <li className="dropdown-item dropdown-indicator">{children}</li>
+      <li className="dropdown-indicator">{children}</li>
     </ul>
   );
 };
