@@ -7,6 +7,8 @@ import { SearchContextProvider } from '../contexts/SearchContext';
 import { getTodoList } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 
+import '../styles/Main.css';
+
 const Main = () => {
   const dispatch = useTodosDispatch();
 

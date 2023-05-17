@@ -1,5 +1,7 @@
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 
+import '../styles/DropdownItem.css';
+
 interface DropdownItemProps {
   index: number;
   children: string;
@@ -22,7 +24,7 @@ const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProp
   return (
     <button
       type="button"
-      className={`${isFocus ? 'active' : ''}`}
+      className={`dropdown-item ${isFocus ? 'active' : ''}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={inactivate}
       onClick={onClick}

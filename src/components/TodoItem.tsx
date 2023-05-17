@@ -8,6 +8,8 @@ import { deleteTodo } from '../api/todo';
 import { TodoType } from '../@types/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 
+import '../styles/TodoItem.css';
+
 type TodoItemProps = {
   id: string;
   title: string;

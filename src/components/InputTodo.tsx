@@ -1,12 +1,16 @@
 /* eslint-disable no-console */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { FaSpinner } from 'react-icons/fa';
+import { FiSearch } from 'react-icons/fi';
+import { RxDotsHorizontal } from 'react-icons/rx';
 import { createTodo } from '../api/todo';
 import useFocus from '../hooks/useFocus';
 import { TodoType } from '../@types/todo';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
-
 import Dropdown from './Dropdown';
+
+import '../styles/InputTodo.css';
 
 export const INITIAL_PAGE_NUM = 1;
 
@@ -85,8 +89,9 @@ const InputTodo = () => {
   };
 
   return (
-    <div>
+    <div className="input-todo-container">
       <form className="form-container" onSubmit={handleSubmit}>
+        <FiSearch className="input-icon" />
         <input
           className="input-text"
           placeholder="Add new todo..."
@@ -99,11 +104,12 @@ const InputTodo = () => {
           }}
           disabled={isLoading}
         />
+        {currentPage === 1 && isSearchLoading && <FaSpinner className="input-icon spinner" />}
       </form>
 
       {suggestions.length !== 0 && (
         <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
-          {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
+          {hasNext && (isSearchLoading ? <FaSpinner className=" spinner" /> : <RxDotsHorizontal />)}
         </Dropdown>
       )}
     </div>
