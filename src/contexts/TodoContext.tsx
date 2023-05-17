@@ -8,14 +8,14 @@ interface TodoState {
   todos: TodoType[];
 }
 
-const TodoStateContext = createContext<TodoState | undefined>(undefined);
-
 interface TodoDispatcher {
   changeInputText: (title: string) => void;
   changeTodos: (todos: TodoType[]) => void;
   setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
 }
-const TodosDispatchContext = createContext<TodoDispatcher | undefined>(undefined);
+
+const TodoStateContext = createContext<TodoState | null>(null);
+const TodosDispatchContext = createContext<TodoDispatcher | null>(null);
 
 const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [todoText, setTodoText] = useState<string>('');

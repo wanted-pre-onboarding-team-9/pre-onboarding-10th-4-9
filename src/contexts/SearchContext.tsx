@@ -6,6 +6,7 @@ import { INITIAL_PAGE_NUM } from '../components/InputTodo';
 const START_ACTIVE_INDEX = -2;
 
 const DEBOUNCE_DELAY_IN_MS = 500;
+
 interface SearchState {
   inputText: string;
   suggestions: string[];
