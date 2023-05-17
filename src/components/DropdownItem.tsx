@@ -1,4 +1,7 @@
+import { TodoType } from '../@types/todo';
+import { createTodo } from '../api/todo';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
+import { useTodosDispatch } from '../contexts/TodoContext';
 
 interface DropdownItemProps {
   index: number;
@@ -9,11 +12,16 @@ interface DropdownItemProps {
 const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProps) => {
   const { inputText } = useSearchState();
   const { hoverSuggestion, inactivate, changeInputText } = useSearchDispatch();
+  const { setTodos } = useTodosDispatch();
   const onMouseEnter = () => hoverSuggestion(index);
 
-  const onClick = () => {
-    // TODO: 리스트에서 추천어를 클릭할 경우, submit todo 함수를 호출하여 등록 => 검색어를 초기화 시켜 드롭다운을 닫음
-    changeInputText('');
+  const onClick = async () => {
+    const newItem = { title: suggestion };
+    const { data } = await createTodo(newItem);
+    if (data) {
+      setTodos((prev: TodoType[]) => [...prev, data]);
+      changeInputText('');
+    }
   };
 
   const keywordRegex = new RegExp(`(${inputText})`, 'gi');
