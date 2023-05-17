@@ -26,11 +26,11 @@
 }
 
 .dropdown-indicator {
-  margin-top: 6px;
-  text-align: center;
+  margin-top: 9px;
+  width: 100%;
 
   & > svg {
     margin: auto;
-    font-size: 15px;
+    font-size: 20px;
   }
 }
