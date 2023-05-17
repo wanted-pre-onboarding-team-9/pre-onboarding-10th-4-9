@@ -18,7 +18,6 @@ interface SearchState {
 
 interface SearchDispatcher {
   changeInputText: (keyword: string) => void;
-  selectedSuggestion: (itemIndex: number) => void;
   hoverSuggestion: (itemIndex: number) => void;
   inactivate: () => void;
   goToNextPage: () => void;
@@ -46,10 +45,6 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
     setInputText(keyword);
   };
 
-  const selectedSuggestion = (itemIndex: number) => {
-    setActiveIndex(itemIndex);
-  };
-
   const goToNextPage = () => {
     setCurrentPage((prev) => prev + 1);
   };
@@ -62,7 +57,6 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
         value={{
           changeInputText,
           inactivate,
-          selectedSuggestion,
           hoverSuggestion,
           goToNextPage,
         }}
