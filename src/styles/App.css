@@ -27,31 +27,11 @@ body {
   }
 }
 
-.btn-plus {
-  color: darkcyan;
-  font-size: 20px;
-}
-
 .btn-trash {
   color: orangered;
   font-size: 16px;
 }
 
-.btn-plus:hover,
 .btn-trash:hover {
   opacity: 0.5;
-}
-
-.main__content {
-  flex: 7;
-}
-
-.main__content h1 {
-  margin-bottom: 15px;
-  line-height: 30px;
-  font-size: 30px;
-}
-
-.main__content p {
-  line-height: 25px;
 }
