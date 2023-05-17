@@ -8,7 +8,7 @@ export const ErrorModal = () => {
 
   return (
     <dialog className="modal-container" open={hasError}>
-      <h1>❌ Error</h1>
+      <h1 className="modal-title">Error</h1>
       <div className="modal-body">{error}</div>
       <button type="button" onClick={hideError} className="modal-button">
         닫기
