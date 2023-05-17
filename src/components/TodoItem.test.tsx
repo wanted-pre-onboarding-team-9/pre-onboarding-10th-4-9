@@ -12,6 +12,12 @@ jest.mock('../contexts/TodoContext', () => ({
   }),
 }));
 
+jest.mock('../contexts/ErrorContext', () => ({
+  useErrorDispatch: () => ({
+    showError: jest.fn(),
+  }),
+}));
+
 describe('TodoItem', () => {
   it('should render the todo item correctly', () => {
     const todo = {
