@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { TodoType } from '../@types/todo';
 import { createTodo } from '../api/todo';
@@ -28,6 +28,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
+  const scrollRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     setFocus();
@@ -36,6 +37,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeInputText(e.target.value);
     setInputText(e.target.value);
+    scrollRef.current?.scrollTo(0, 0);
   };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,13 +76,16 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
     }
   };
 
-  const checkScroll = () => {
-    const dropDownUL = document.querySelector('.dropdownContainer');
+  const calcScrollEnd = () => {
+    const curRef = scrollRef.current;
+    if (!curRef) return false;
+    return curRef.scrollTop + curRef.clientHeight >= curRef.scrollHeight * 0.9;
+  };
 
-    if (dropDownUL) {
-      const isScrollEnd = dropDownUL.scrollTop + dropDownUL.clientHeight >= dropDownUL.scrollHeight;
-      if (isScrollEnd) moreSearch();
-    }
+  const checkScroll = () => {
+    const isScrollEnd = calcScrollEnd();
+
+    if (isScrollEnd) moreSearch();
   };
 
   return (
@@ -97,7 +102,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
       </form>
 
       {suggestions.length !== 0 && (
-        <Dropdown onScroll={checkScroll}>
+        <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
           {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
         </Dropdown>
       )}
