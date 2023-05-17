@@ -12,7 +12,7 @@ type DropdownProp = {
 };
 
 const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
-  const { suggestions, activeIndex, inputText } = useSearchState();
+  const { suggestions, activeIndex, inputText, hasNext } = useSearchState();
   const { goToNextPage } = useSearchDispatch();
 
   const lastItemRef = useElementInViewport<HTMLButtonElement>(goToNextPage);
@@ -42,7 +42,7 @@ const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
           </DropdownItem>
         );
       })}
-      <li className="dropdown-indicator">{children}</li>
+      {hasNext && <li className="dropdown-indicator">{children}</li>}
     </ul>
   );
 };
