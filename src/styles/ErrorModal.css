@@ -1,0 +1,27 @@
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 300px;
+  height: 200px;
+
+  border-radius: 10px;
+  box-shadow: 6px 6px 14px -1px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 6px 6px 14px -1px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 6px 6px 14px -1px rgba(0, 0, 0, 0.3);
+  border: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.modal-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  background-color: #2bc9ba;
+}
