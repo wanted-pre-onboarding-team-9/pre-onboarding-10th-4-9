@@ -6,6 +6,8 @@ import { deleteTodo } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
 
+import '../styles/TodoItem.css';
+
 type TodoItemProps = {
   id: string;
   title: string;

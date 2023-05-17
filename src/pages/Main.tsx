@@ -11,6 +11,8 @@ import { getTodoList } from '../api/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch, useErrorState } from '../contexts/ErrorContext';
 
+import '../styles/Main.css';
+
 const Main = () => {
   const { changeTodos } = useTodosDispatch();
   const { hasError } = useErrorState();

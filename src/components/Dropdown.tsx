@@ -1,6 +1,8 @@
 import { useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
 
+import '../styles/Dropdown.css';
+
 const INPUTTEXT_INDEX = -1;
 
 type DropdownProp = {
@@ -22,7 +24,7 @@ const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
     );
   }
   return (
-    <ul className="dropdownContainer" onScroll={onScroll} ref={scrollRef}>
+    <ul className="dropdown-container" onScroll={onScroll} ref={scrollRef}>
       {inputText.trim().length > 0 && (
         <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
           {inputText}
@@ -36,7 +38,7 @@ const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
           </DropdownItem>
         );
       })}
-      {children}
+      <li className="dropdown-item dropdown-indicator">{children}</li>
     </ul>
   );
 };

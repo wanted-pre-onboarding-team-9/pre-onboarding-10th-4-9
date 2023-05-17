@@ -2,6 +2,8 @@ import TodoItem from './TodoItem';
 
 import { useTodosState } from '../contexts/TodoContext';
 
+import '../styles/TodoList.css';
+
 const TodoList = () => {
   const { todos } = useTodosState();
 
