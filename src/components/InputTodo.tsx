@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-
 import { useCallback, useEffect, useState } from 'react';
 import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
 import { createTodo } from '../api/todo';
@@ -7,19 +6,15 @@ import useFocus from '../hooks/useFocus';
 import { TodoType } from '../@types/todo';
 import { useSearchDispatch, useSearchState } from '../context/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
-    
-type InputTodoProps = {
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-};
 
-const InputTodo = ({ setTodos }: InputTodoProps) => {
+const InputTodo = () => {
   const { inputText: searchInputText, isLoading: isSearchLoading } = useSearchState();
   const { changeInputText } = useSearchDispatch();
 
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
-    const dispatch = useTodosDispatch();
+  const dispatch = useTodosDispatch();
 
   useEffect(() => {
     setFocus();
@@ -65,13 +60,12 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         className="input-text"
         placeholder="Add new todo..."
         ref={ref}
-     value={inputText || searchInputText}
+        value={inputText || searchInputText}
         onChange={(e) => {
           setInputText(e.target.value);
           dispatch.changeInputText(e.target.value);
-          onChange(e)
+          onChange(e);
         }}
-
         disabled={isLoading}
       />
       {!isSearchLoading ? (

@@ -26,9 +26,9 @@ const Main = () => {
       <SearchContextProvider>
         <div className="inner">
           <Header />
-          <InputTodo setTodos={setTodoListData} />
+          <InputTodo />
           <Dropdown />
-          <TodoList todos={todoListData} setTodos={setTodoListData} />
+          <TodoList />
         </div>
       </SearchContextProvider>
     </div>
