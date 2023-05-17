@@ -10,7 +10,7 @@ export interface GetSuggestionProps {
 
 const getSuggestions = async ({ q, page = 1 }: GetSuggestionProps) => {
   const response = await apiRequest.get(`${RESOURCE}?q=${q}&page=${page}&limit=${LIMIT}`);
-  return response.data;
+  return response;
 };
 
 export default getSuggestions;

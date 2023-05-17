@@ -2,6 +2,7 @@ import axios, { Axios } from 'axios';
 
 const baseURL = process.env.REACT_APP_API_URL;
 const token = process.env.REACT_APP_TOKEN;
+// const token = 0;
 
 const baseInstance = axios.create({
   baseURL,
@@ -10,12 +11,7 @@ const baseInstance = axios.create({
   },
 });
 
-baseInstance.interceptors.response.use(
-  ({ data }) => data,
-  (error) => {
-    return Promise.reject(error);
-  },
-);
+baseInstance.interceptors.response.use(({ data }) => data);
 
 const apiRequest = {
   get: (...args: Parameters<Axios['get']>) => baseInstance.get(...args),
