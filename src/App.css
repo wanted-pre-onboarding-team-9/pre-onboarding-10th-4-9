@@ -158,3 +158,8 @@ body {
   color: white;
   background-color: blue;
 }
+
+.dropdownContainer {
+  overflow: auto;
+  max-height: 170px;
+}

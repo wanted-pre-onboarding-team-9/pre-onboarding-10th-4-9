@@ -1,4 +1,4 @@
-import { useSearchDispatch, useSearchState } from '../context/SearchContext';
+import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 
 interface DropdownItemProps {
   index: number;
