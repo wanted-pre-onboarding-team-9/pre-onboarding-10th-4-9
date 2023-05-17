@@ -53,48 +53,48 @@ $ yarn start
 
 ## 1. 리팩토링
 
-#### 1-1. 추천 관련 Context 적용 방법
+#### 1-1. [추천 관련 Context 적용 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/4)
 
 - search context를 사용한 이유는 병렬적 구조로 배열되는 Dropdown 컴포넌트와 InputTodo 컴포넌트에서 사용하기 위함입니다.
 - 단일 책임 원칙을 위해서 search Context 에서 상태(state)와 수정함수(modify function)을 분리하여 구현했습니다.
 
-#### 1-2. Todo 관련 Context 적용 방법
+#### 1-2. [Todo 관련 Context 적용 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/8)
 
 - Todo Context에 있는 todos로 투두 리스트를 컨트롤합니다.
 
-#### 1-3. 불필요한 state 사용 제거 방법
+#### 1-3. [불필요한 state 사용 제거 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/22)
 
-- useSuggestions에 불필요하게 존재하던 moreSuggestion 함수를 없애기 위해, q와 page를 인자로 받아 useEffect dependency array에 설정하고 변경될 경우 데이터를 불러오는 방식으로 변경했습니다.
-- Context에서 Provider에 value를 넘길 때 사용하던 useMemo의 필요성에 의문을 가져 제거했습니다.
-- 검색 바에서 input value는 SearchContext에서 관리하고, TodoContext에서는 TODO list 관련 상태만 관리하도록 변경했습니다. 따라서 사용하지 않는 state인 todoText 제거했습니다.
+- [[commit](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/commit/9217b64fa230210f255285c70f1e9fab3e2fdacc)] `useSuggestions`에 불필요하게 존재하던 `moreSuggestion` 함수를 없애기 위해, q와 page를 인자로 받아 useEffect dependency array에 설정하고 변경될 경우 데이터를 불러오는 방식으로 변경했습니다.
+- [[commit](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/pull/24/commits/85801f2900290285952cfb952896479db7c24662)] Context에서 Provider에 value를 넘길 때 사용하던 useMemo의 필요성에 의문을 가져 제거하였습니다.
+- [[commit](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/pull/24/commits/c2356f17012813dc4ea77e0e33db0504a39be00b)] 검색 바에서 input value는 `SearchContext`에서 관리하고, `TodoContext`에서는 TODO list 관련 상태만 관리하도록 변경하였습니다. 따라서 사용하지 않는 state인 `todoText` 제거하였습니다.
   <br/>
 
-## 2. 무한스크롤 방법
+## 2. [무한스크롤 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/pull/33)
 
-- 결과가 10개보다 많을때 more 아이콘이 보이고, 하단까지 스크롤 했을때 다음 결과를 추가하며, onScroll을 이용해서 무한스크롤 기능을 구현했습니다.
+- 결과가 10개보다 많을때 more 아이콘이 보이고, 하단까지 스크롤 했을때 다음 결과를 추가하며, `IntersectionObserver`를 이용해 뷰 포트에 ref로 지정한 element가 표시됐는지 확인하여 API를 불러와 무한스크롤을 구현했습니다.
 - 추가 검색도중 debounce를 적용하고, 로딩 스피너 아이콘이 표시됩니다.
-- 검색어 변경시 스크롤 위치가 초기화 되며 스크롤 위치 체크는 ref로 합니다.
+
   <br/>
 
-## 3. 테스트 코드 방법
+## 3. [테스트 코드 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/14)
 
 - 코드 작업 시 빠른 피드백을 받고 휴먼에러를 피하기 위해 Jest와 RTL을 사용한 테스트 코드를 추가했습니다.
 - context와 같은 종속성은 Jest를 이용해 mocking하여 처리했습니다.
 - GitHub Actions를 통해 main branch로 PR시 test code 통과 여부를 검사하도록 자동화함으로써 버그를 일으키는 코드가 merge되는 것을 방지했습니다.
   <br/>
 
-## 4. 에러 처리 방법
+## 4. [에러 처리 방법](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/13)
 
 - ui상의 에러와 api 요청에서 발생하는 에러를 모두 감싸는 방법으로 context api를 적용했습니다.
 - view에서 사용자에게 에러를 표시할 수 있도록 구현했습니다.
   <br/>
 
-## 5. 타입스크립트 적용
+## 5. [타입스크립트 적용](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/2)
 
 - 기존에 자바스크립트로 작성된 과제코드를 타입스크립트로 마이그레이션 했습니다.
   <br/>
 
-## 6. CSS 분리 과정
+## 6. [CSS 분리 과정](https://github.com/wanted-pre-onboarding-team-9/pre-onboarding-10th-4-9/issues/10)
 
 - 스타일 관련 코드 디렉토리 구조 개선했습니다.
   <br/>
