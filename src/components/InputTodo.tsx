@@ -1,28 +1,21 @@
 /* eslint-disable no-console */
-/* eslint-disable no-alert */
-
 import { useCallback, useEffect, useState } from 'react';
-
 import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
-
 import { createTodo } from '../api/todo';
-
 import useFocus from '../hooks/useFocus';
-
 import { TodoType } from '../@types/todo';
 import { useSearchDispatch, useSearchState } from '../context/SearchContext';
+import { useTodosDispatch } from '../contexts/TodoContext';
 
-type InputTodoProps = {
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-};
-
-const InputTodo = ({ setTodos }: InputTodoProps) => {
+const InputTodo = () => {
   const { inputText: searchInputText, isLoading: isSearchLoading } = useSearchState();
   const { changeInputText } = useSearchDispatch();
 
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
+  const dispatch = useTodosDispatch();
+
   useEffect(() => {
     setFocus();
   }, [setFocus]);
@@ -43,10 +36,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         }
 
         const newItem = { title: trimmed };
+
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return setTodos((prev) => [...prev, data]);
+          return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
         }
       } catch (error) {
         console.error(error);
@@ -58,7 +52,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
 
       return undefined;
     },
-    [inputText, setTodos],
+    [inputText, dispatch.setTodos],
   );
   return (
     <form className="form-container" onSubmit={handleSubmit}>
@@ -67,7 +61,11 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
         placeholder="Add new todo..."
         ref={ref}
         value={inputText || searchInputText}
-        onChange={onChange}
+        onChange={(e) => {
+          setInputText(e.target.value);
+          dispatch.changeInputText(e.target.value);
+          onChange(e);
+        }}
         disabled={isLoading}
       />
       {!isSearchLoading ? (
