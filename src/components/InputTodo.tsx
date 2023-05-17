@@ -5,7 +5,6 @@ import { FiSearch } from 'react-icons/fi';
 import { RxDotsHorizontal } from 'react-icons/rx';
 import { createTodo } from '../api/todo';
 import useFocus from '../hooks/useFocus';
-import { TodoType } from '../@types/todo';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
@@ -17,7 +16,7 @@ export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
   const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
-  const { changeInputText, goToNextPage, setCurrentPage } = useSearchDispatch();
+  const { changeInputText, goToNextPage } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
