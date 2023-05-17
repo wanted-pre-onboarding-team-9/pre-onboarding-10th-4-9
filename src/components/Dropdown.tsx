@@ -1,8 +1,8 @@
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
+import useElementInViewport from '../hooks/useElementInViewport';
 
 import '../styles/Dropdown.css';
-import useElementInViewport from '../hooks/useElementInViewport';
 
 const INPUTTEXT_INDEX = -1;
 
