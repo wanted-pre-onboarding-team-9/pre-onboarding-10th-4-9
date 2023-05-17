@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import { useCallback, useEffect, useState } from 'react';
 import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
 import { createTodo } from '../api/todo';
@@ -9,7 +11,7 @@ const InputTodo = () => {
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
-
+  console.log('inputText', inputText);
   const dispatch = useTodosDispatch();
 
   useEffect(() => {

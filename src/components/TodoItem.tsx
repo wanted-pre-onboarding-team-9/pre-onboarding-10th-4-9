@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useCallback, useState } from 'react';
 
 import { FaSpinner, FaTrash } from 'react-icons/fa';
