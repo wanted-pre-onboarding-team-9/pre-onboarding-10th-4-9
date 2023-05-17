@@ -78,8 +78,9 @@ $ yarn start
 
 ## 3. 테스트 코드 방법
 
-- 터미널에 yarn test 입력 시 테스트 시행됩니다.
-- main branch로 PR시 test code를 자동 실행합니다.
+- 코드 작업 시 빠른 피드백을 받고 휴먼에러를 피하기 위해 Jest와 RTL을 사용한 테스트 코드를 추가했습니다.
+- context와 같은 종속성은 Jest를 이용해 mocking하여 처리했습니다.
+- GitHub Actions를 통해 main branch로 PR시 test code 통과 여부를 검사하도록 자동화함으로써 버그를 일으키는 코드가 merge되는 것을 방지했습니다.
   <br/>
 
 ## 4. 에러 처리 방법
