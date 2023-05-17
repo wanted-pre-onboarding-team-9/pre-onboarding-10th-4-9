@@ -4,12 +4,10 @@ import { createContext, useContext, useState } from 'react';
 import { TodoType } from '../@types/todo';
 
 interface TodoState {
-  todoText: string;
   todos: TodoType[];
 }
 
 interface TodoDispatcher {
-  changeInputText: (title: string) => void;
   addTodo: (todo: TodoType) => void;
   removeTodo: (id: TodoType['id']) => void;
   changeTodos: (todos: TodoType[]) => void;
@@ -19,12 +17,7 @@ const TodoStateContext = createContext<TodoState | null>(null);
 const TodosDispatchContext = createContext<TodoDispatcher | null>(null);
 
 const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [todoText, setTodoText] = useState<string>('');
   const [todos, setTodos] = useState<TodoType[]>([]);
-
-  const changeInputText = (title: string) => {
-    setTodoText(title);
-  };
 
   const addTodo = (todo: TodoType) => {
     setTodos((prev) => [...prev, todo]);
@@ -39,8 +32,8 @@ const TodosContextProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <TodoStateContext.Provider value={{ todoText, todos }}>
-      <TodosDispatchContext.Provider value={{ changeInputText, addTodo, removeTodo, changeTodos }}>
+    <TodoStateContext.Provider value={{ todos }}>
+      <TodosDispatchContext.Provider value={{ addTodo, removeTodo, changeTodos }}>
         {children}
       </TodosDispatchContext.Provider>
     </TodoStateContext.Provider>
