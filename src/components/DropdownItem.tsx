@@ -8,9 +8,10 @@ interface DropdownItemProps {
   index: number;
   children: string;
   isFocus: boolean;
+  lastItemRef?: React.RefObject<HTMLButtonElement>;
 }
 
-const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProps) => {
+const DropdownItem = ({ index, children: suggestion, isFocus, lastItemRef }: DropdownItemProps) => {
   const { inputText } = useSearchState();
   const { hoverSuggestion, inactivate, changeInputText } = useSearchDispatch();
   const { addTodo } = useTodosDispatch();
@@ -31,6 +32,7 @@ const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProp
   return (
     <button
       type="button"
+      ref={lastItemRef}
       className={`dropdown-item ${isFocus ? 'active' : ''}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={inactivate}
