@@ -1,6 +1,5 @@
-import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
+import { AxiosError } from 'axios';
 import { FaSpinner } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 import { RxDotsHorizontal } from 'react-icons/rx';
@@ -18,11 +17,11 @@ export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
   const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
-  const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
+  const { changeInputText, goToNextPage, setCurrentPage } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
-  const dispatch = useTodosDispatch();
+  const { addTodo } = useTodosDispatch();
   const { showError } = useErrorDispatch();
 
   useEffect(() => {
@@ -49,7 +48,7 @@ const InputTodo = () => {
         const { data } = await createTodo(newItem);
 
         if (data) {
-          return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
+          return addTodo(data);
         }
       } catch (error) {
         const { response } = error as unknown as AxiosError;
@@ -61,13 +60,12 @@ const InputTodo = () => {
 
       return undefined;
     },
-    [inputText, dispatch.setTodos],
+    [inputText, addTodo],
   );
 
   const moreSearch = () => {
     if (hasNext && !isSearchLoading) {
-      setCurrentPage();
-      moreSuggestion(inputText, currentPage + 1);
+      goToNextPage();
     }
   };
 
@@ -94,7 +92,6 @@ const InputTodo = () => {
           value={inputText}
           onChange={(e) => {
             changeInputText(e.target.value);
-            dispatch.changeInputText(e.target.value);
             onChange(e);
           }}
           disabled={isLoading}

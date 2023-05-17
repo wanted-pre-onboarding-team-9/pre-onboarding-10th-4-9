@@ -1,4 +1,3 @@
-import { TodoType } from '../@types/todo';
 import { createTodo } from '../api/todo';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
@@ -14,14 +13,14 @@ interface DropdownItemProps {
 const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProps) => {
   const { inputText } = useSearchState();
   const { hoverSuggestion, inactivate, changeInputText } = useSearchDispatch();
-  const { setTodos } = useTodosDispatch();
+  const { addTodo } = useTodosDispatch();
   const onMouseEnter = () => hoverSuggestion(index);
 
   const onClick = async () => {
     const newItem = { title: suggestion };
     const { data } = await createTodo(newItem);
     if (data) {
-      setTodos((prev: TodoType[]) => [...prev, data]);
+      addTodo(data);
       changeInputText('');
     }
   };
