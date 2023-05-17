@@ -21,7 +21,8 @@
     "start": "react-scripts start",
     "postinstall": "husky install",
     "format": "prettier --cache --write '**/*.{ts,tsx}'",
-    "lint": "eslint --cache '**/*.{ts,tsx}'"
+    "lint": "eslint --cache '**/*.{ts,tsx}'",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
