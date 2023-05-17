@@ -8,9 +8,9 @@ export interface GetSuggestionProps {
   page: number;
 }
 
-const getSuggestions = async ({ q, page = 1 }: GetSuggestionProps) => {
-  const response = await apiRequest.get(`${RESOURCE}?q=${q}&page=${page}&limit=${LIMIT}`);
-  return response;
+const getSuggestions = ({ q, page }: GetSuggestionProps) => {
+  const params = { q, page, limit: LIMIT };
+  return apiRequest.get(`${RESOURCE}`, { params });
 };
 
 export default getSuggestions;
