@@ -97,7 +97,7 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
       </form>
 
       {suggestions.length !== 0 && (
-        <Dropdown onWheel={checkScroll}>
+        <Dropdown onScroll={checkScroll}>
           {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
         </Dropdown>
       )}

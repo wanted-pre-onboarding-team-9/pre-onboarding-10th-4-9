@@ -3,15 +3,15 @@ import DropdownItem from './DropdownItem';
 
 type DropdownProp = {
   children: React.ReactNode;
-  onWheel: () => void;
+  onScroll: () => void;
 };
 
-const Dropdown = ({ onWheel, children }: DropdownProp) => {
+const Dropdown = ({ onScroll, children }: DropdownProp) => {
   const { suggestions, activeIndex } = useSearchState();
   if (suggestions.length === 0) return null;
 
   return (
-    <ul className="dropdownContainer" onWheel={onWheel}>
+    <ul className="dropdownContainer" onScroll={onScroll}>
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
         return (
