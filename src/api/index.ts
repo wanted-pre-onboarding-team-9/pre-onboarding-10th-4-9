@@ -2,7 +2,6 @@ import axios, { Axios } from 'axios';
 
 const baseURL = process.env.REACT_APP_API_URL;
 const token = process.env.REACT_APP_TOKEN;
-// const token = 0;
 
 const baseInstance = axios.create({
   baseURL,
