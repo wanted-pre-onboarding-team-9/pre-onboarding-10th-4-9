@@ -1,5 +1,6 @@
-/* eslint-disable no-console */
+import { AxiosError } from 'axios';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import { FaSpinner } from 'react-icons/fa';
 import { FiSearch } from 'react-icons/fi';
 import { RxDotsHorizontal } from 'react-icons/rx';
@@ -8,6 +9,7 @@ import useFocus from '../hooks/useFocus';
 import { TodoType } from '../@types/todo';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
+import { useErrorDispatch } from '../contexts/ErrorContext';
 import Dropdown from './Dropdown';
 
 import '../styles/InputTodo.css';
@@ -15,19 +17,13 @@ import '../styles/InputTodo.css';
 export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
-  const {
-    inputText: searchInputText,
-    isLoading: isSearchLoading,
-    suggestions,
-    hasNext,
-    currentPage,
-  } = useSearchState();
+  const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
   const { changeInputText, moreSuggestion, setCurrentPage } = useSearchDispatch();
-  const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { ref, setFocus } = useFocus();
   const scrollRef = useRef<HTMLUListElement>(null);
   const dispatch = useTodosDispatch();
+  const { showError } = useErrorDispatch();
 
   useEffect(() => {
     setFocus();
@@ -35,7 +31,6 @@ const InputTodo = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeInputText(e.target.value);
-    setInputText(e.target.value);
     scrollRef.current?.scrollTo(0, 0);
   };
   const handleSubmit = useCallback(
@@ -44,9 +39,9 @@ const InputTodo = () => {
         e.preventDefault();
         setIsLoading(true);
 
-        const trimmed = searchInputText ? searchInputText.trim() : inputText.trim();
+        const trimmed = inputText.trim();
         if (!trimmed) {
-          return alert('Please write something');
+          return showError('Please write something');
         }
 
         const newItem = { title: trimmed };
@@ -57,10 +52,10 @@ const InputTodo = () => {
           return dispatch.setTodos((prev: TodoType[]) => [...prev, data]);
         }
       } catch (error) {
-        console.error(error);
-        alert('Something went wrong.');
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
       } finally {
-        setInputText('');
+        changeInputText('');
         setIsLoading(false);
       }
 
@@ -72,7 +67,7 @@ const InputTodo = () => {
   const moreSearch = () => {
     if (hasNext && !isSearchLoading) {
       setCurrentPage();
-      moreSuggestion(searchInputText, currentPage + 1);
+      moreSuggestion(inputText, currentPage + 1);
     }
   };
 
@@ -96,9 +91,9 @@ const InputTodo = () => {
           className="input-text"
           placeholder="Add new todo..."
           ref={ref}
-          value={inputText || searchInputText}
+          value={inputText}
           onChange={(e) => {
-            setInputText(e.target.value);
+            changeInputText(e.target.value);
             dispatch.changeInputText(e.target.value);
             onChange(e);
           }}
@@ -107,11 +102,14 @@ const InputTodo = () => {
         {currentPage === 1 && isSearchLoading && <FaSpinner className="input-icon spinner" />}
       </form>
 
-      {suggestions.length !== 0 && (
-        <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
-          {hasNext && (isSearchLoading ? <FaSpinner className=" spinner" /> : <RxDotsHorizontal />)}
-        </Dropdown>
-      )}
+      <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
+        {hasNext &&
+          (isSearchLoading ? (
+            <FaSpinner className="input-icon spinner" />
+          ) : (
+            <RxDotsHorizontal className="input-icon" />
+          ))}
+      </Dropdown>
     </div>
   );
 };
