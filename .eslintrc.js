@@ -23,6 +23,7 @@ module.exports = {
       },
     ],
     'react/jsx-no-constructed-context-values': 'off',
+    'react/require-default-props': 'off',
   },
   settings: {
     'import/resolver': {

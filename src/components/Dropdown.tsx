@@ -1,30 +1,24 @@
-import { useSearchState } from '../contexts/SearchContext';
+import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
+import useElementInViewport from '../hooks/useElementInViewport';
 
 import '../styles/Dropdown.css';
 
 const INPUTTEXT_INDEX = -1;
 
 type DropdownProp = {
+  dropdownRef: React.RefObject<HTMLUListElement>;
   children: React.ReactNode;
-  onScroll: () => void;
-  scrollRef: React.ForwardedRef<HTMLUListElement>;
 };
 
-const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
+const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
   const { suggestions, activeIndex, inputText } = useSearchState();
+  const { goToNextPage } = useSearchDispatch();
 
-  if (suggestions.length === 0 && inputText.trim().length > 0) {
-    return (
-      <ul className="dropdown-Container" onScroll={onScroll} ref={scrollRef}>
-        <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
-          {inputText}
-        </DropdownItem>
-      </ul>
-    );
-  }
+  const lastItemRef = useElementInViewport<HTMLButtonElement>(goToNextPage);
+
   return (
-    <ul className="dropdown-container" onScroll={onScroll} ref={scrollRef}>
+    <ul className="dropdown-container" ref={dropdownRef}>
       {inputText.trim().length > 0 && (
         <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
           {inputText}
@@ -32,8 +26,18 @@ const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
       )}
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
+        const isFocus = activeIndex === idx;
+        const isLastItem = suggestions.length - 1 === idx;
+
+        if (isLastItem) {
+          return (
+            <DropdownItem key={id} index={idx} isFocus={isFocus} lastItemRef={lastItemRef}>
+              {suggestion}
+            </DropdownItem>
+          );
+        }
         return (
-          <DropdownItem key={id} index={idx} isFocus={activeIndex === idx}>
+          <DropdownItem key={id} index={idx} isFocus={isFocus}>
             {suggestion}
           </DropdownItem>
         );
