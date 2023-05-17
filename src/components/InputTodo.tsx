@@ -1,24 +1,16 @@
 /* eslint-disable no-console */
-/* eslint-disable no-alert */
-
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
-import { TodoType } from '../@types/todo';
 import { createTodo } from '../api/todo';
-import { useSearchDispatch, useSearchState } from '../context/SearchContext';
 import useFocus from '../hooks/useFocus';
+import { TodoType } from '../@types/todo';
+import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
+import { useTodosDispatch } from '../contexts/TodoContext';
 
 import Dropdown from './Dropdown';
 
-import { FaPlusCircle, FaSpinner } from 'react-icons/fa';
-import { useTodosDispatch } from '../contexts/TodoContext';
-
-type InputTodoProps = {
-  setTodos: React.Dispatch<React.SetStateAction<TodoType[]>>;
-};
 export const INITIAL_PAGE_NUM = 1;
 
-const InputTodo = ({ setTodos }: InputTodoProps) => {
+const InputTodo = () => {
   const {
     inputText: searchInputText,
     isLoading: isSearchLoading,
@@ -101,10 +93,10 @@ const InputTodo = ({ setTodos }: InputTodoProps) => {
           ref={ref}
           value={inputText || searchInputText}
           onChange={(e) => {
-          setInputText(e.target.value);
-          dispatch.changeInputText(e.target.value);
-          onChange(e);
-        }}
+            setInputText(e.target.value);
+            dispatch.changeInputText(e.target.value);
+            onChange(e);
+          }}
           disabled={isLoading}
         />
       </form>

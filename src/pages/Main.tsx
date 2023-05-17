@@ -3,9 +3,8 @@ import { useEffect } from 'react';
 import Header from '../components/Header';
 import InputTodo from '../components/InputTodo';
 import TodoList from '../components/TodoList';
-import { SearchContextProvider } from '../context/SearchContext';
+import { SearchContextProvider } from '../contexts/SearchContext';
 import { getTodoList } from '../api/todo';
-import { TodoType } from '../@types/todo';
 import { useTodosDispatch } from '../contexts/TodoContext';
 
 const Main = () => {
@@ -24,8 +23,8 @@ const Main = () => {
       <SearchContextProvider>
         <div className="inner">
           <Header />
-          <InputTodo setTodos={setTodoListData} />
-          <TodoList todos={todoListData} setTodos={setTodoListData} />
+          <InputTodo />
+          <TodoList />
         </div>
       </SearchContextProvider>
     </div>

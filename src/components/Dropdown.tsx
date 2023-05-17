@@ -1,4 +1,4 @@
-import { useSearchState } from '../context/SearchContext';
+import { useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
 
 type DropdownProp = {
