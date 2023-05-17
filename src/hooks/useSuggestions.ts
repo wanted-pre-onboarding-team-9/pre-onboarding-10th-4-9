@@ -1,5 +1,7 @@
+import { AxiosError } from 'axios';
 import { useState } from 'react';
 import getSuggestions from '../api/search';
+import { useErrorDispatch } from '../contexts/ErrorContext';
 
 type UseSuggestionsOutput = {
   suggestions: string[];
@@ -13,16 +15,23 @@ const useSuggestions = (): UseSuggestionsOutput => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasNext, setHasNext] = useState(false);
+  const { showError } = useErrorDispatch();
 
   const changeKeyword = async (keyword: string) => {
     if (keyword === '') {
       setSuggestions([]);
     } else {
       setIsLoading(true);
-      const { data } = await getSuggestions({ q: keyword, page: 1 });
-      setSuggestions(data.result);
-      setHasNext(data.page * data.limit < data.total);
-      setIsLoading(false);
+      try {
+        const { data } = await getSuggestions({ q: keyword, page: 1 });
+        setSuggestions(data.result);
+        setHasNext(data.page * data.limit < data.total);
+      } catch (error) {
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -31,12 +40,18 @@ const useSuggestions = (): UseSuggestionsOutput => {
       setSuggestions([]);
     } else {
       setIsLoading(true);
-      const { data } = await getSuggestions({ q: keyword, page: nextPage });
-      if (data) {
-        setSuggestions((prev) => [...prev, ...data.result]);
-        setHasNext(data.page * data.limit < data.total);
+      try {
+        const { data } = await getSuggestions({ q: keyword, page: nextPage });
+        if (data) {
+          setSuggestions((prev) => [...prev, ...data.result]);
+          setHasNext(data.page * data.limit < data.total);
+        }
+      } catch (error) {
+        const { response } = error as unknown as AxiosError;
+        showError(response?.data.message);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
   };
 
