@@ -39,17 +39,9 @@ const DropdownItem = ({ index, children: suggestion, isFocus }: DropdownItemProp
       {texts.map((text, idx) => {
         const key = text + idx;
         if (keywordRegex.test(text)) {
-          return (
-            <span className="sugegestion-item-text sugegestion-item-keyword" key={key}>
-              {text}
-            </span>
-          );
+          return <span key={key}>{text}</span>;
         }
-        return (
-          <span className="sugegestion-item-text" key={key}>
-            {text}
-          </span>
-        );
+        return <span key={key}>{text}</span>;
       })}
     </button>
   );
