@@ -1,6 +1,8 @@
 import { useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
 
+const INPUTTEXT_INDEX = -1;
+
 type DropdownProp = {
   children: React.ReactNode;
   onScroll: () => void;
@@ -8,11 +10,24 @@ type DropdownProp = {
 };
 
 const Dropdown = ({ children, onScroll, scrollRef }: DropdownProp) => {
-  const { suggestions, activeIndex } = useSearchState();
-  if (suggestions.length === 0) return null;
+  const { suggestions, activeIndex, inputText } = useSearchState();
 
+  if (suggestions.length === 0 && inputText.trim().length > 0) {
+    return (
+      <ul className="dropdownContainer" onScroll={onScroll} ref={scrollRef}>
+        <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
+          {inputText}
+        </DropdownItem>
+      </ul>
+    );
+  }
   return (
     <ul className="dropdownContainer" onScroll={onScroll} ref={scrollRef}>
+      {inputText.trim().length > 0 && (
+        <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
+          {inputText}
+        </DropdownItem>
+      )}
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
         return (

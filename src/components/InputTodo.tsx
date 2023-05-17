@@ -14,7 +14,6 @@ const InputTodo = () => {
   const {
     inputText: searchInputText,
     isLoading: isSearchLoading,
-    suggestions,
     hasNext,
     currentPage,
   } = useSearchState();
@@ -101,11 +100,9 @@ const InputTodo = () => {
         />
       </form>
 
-      {suggestions.length !== 0 && (
-        <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
-          {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
-        </Dropdown>
-      )}
+      <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
+        {hasNext && (isSearchLoading ? <div>Loading아이콘</div> : <div>More아이콘</div>)}
+      </Dropdown>
     </div>
   );
 };
