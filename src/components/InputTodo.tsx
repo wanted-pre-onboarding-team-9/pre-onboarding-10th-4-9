@@ -16,10 +16,10 @@ export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
   const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
-  const { changeInputText, goToNextPage } = useSearchDispatch();
+  const { changeInputText } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const { ref, setFocus } = useFocus();
-  const scrollRef = useRef<HTMLUListElement>(null);
+  const { ref: inputRef, setFocus } = useFocus();
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const { addTodo } = useTodosDispatch();
   const { showError } = useErrorDispatch();
 
@@ -29,7 +29,7 @@ const InputTodo = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeInputText(e.target.value);
-    scrollRef.current?.scrollTo(0, 0);
+    dropdownRef.current?.scrollTo(0, 0);
   };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,24 +62,6 @@ const InputTodo = () => {
     [inputText, addTodo],
   );
 
-  const moreSearch = () => {
-    if (hasNext && !isSearchLoading) {
-      goToNextPage();
-    }
-  };
-
-  const calcScrollEnd = () => {
-    const curRef = scrollRef.current;
-    if (!curRef) return false;
-    return curRef.scrollTop + curRef.clientHeight >= curRef.scrollHeight * 0.9;
-  };
-
-  const checkScroll = () => {
-    const isScrollEnd = calcScrollEnd();
-
-    if (isScrollEnd) moreSearch();
-  };
-
   return (
     <div className="input-todo-container">
       <form className="form-container" onSubmit={handleSubmit}>
@@ -87,7 +69,7 @@ const InputTodo = () => {
         <input
           className="input-text"
           placeholder="Add new todo..."
-          ref={ref}
+          ref={inputRef}
           value={inputText}
           onChange={(e) => {
             changeInputText(e.target.value);
@@ -98,14 +80,16 @@ const InputTodo = () => {
         {currentPage === 1 && isSearchLoading && <FaSpinner className="input-icon spinner" />}
       </form>
 
-      <Dropdown onScroll={checkScroll} scrollRef={scrollRef}>
-        {hasNext &&
-          (isSearchLoading ? (
-            <FaSpinner className="input-icon spinner" />
-          ) : (
-            <RxDotsHorizontal className="input-icon" />
-          ))}
-      </Dropdown>
+      {inputText && (
+        <Dropdown dropdownRef={dropdownRef}>
+          {hasNext &&
+            (isSearchLoading ? (
+              <FaSpinner className="input-icon spinner" />
+            ) : (
+              <RxDotsHorizontal className="input-icon" />
+            ))}
+        </Dropdown>
+      )}
     </div>
   );
 };
