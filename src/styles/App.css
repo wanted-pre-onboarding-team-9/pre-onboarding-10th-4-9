@@ -12,6 +12,11 @@ body {
   height: 100vh;
 }
 
+:root {
+  --error-modal-z-index: 10;
+  --dropdown-z-index: 9;
+}
+
 .spinner {
   animation: spin 1s linear infinite;
   display: flex;
