@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { TbLoader2 } from 'react-icons/tb';
 import { FiSearch } from 'react-icons/fi';
@@ -18,7 +18,6 @@ const InputTodo = () => {
   const { changeInputText } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref: inputRef, setFocus } = useFocus();
-  const dropdownRef = useRef<HTMLUListElement>(null);
   const { addTodo } = useTodosDispatch();
   const { showError } = useErrorDispatch();
 
@@ -28,7 +27,6 @@ const InputTodo = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeInputText(e.target.value);
-    dropdownRef.current?.scrollTo(0, 0);
   };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {

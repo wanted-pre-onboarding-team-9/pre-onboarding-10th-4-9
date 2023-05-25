@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { TbLoader2 } from 'react-icons/tb';
 import { RxDotsHorizontal } from 'react-icons/rx';
 
@@ -13,12 +12,11 @@ const INPUTTEXT_INDEX = -1;
 const Dropdown = () => {
   const { suggestions, isLoading, activeIndex, inputText, hasNext } = useSearchState();
   const { goToNextPage } = useSearchDispatch();
-  const dropdownRef = useRef<HTMLUListElement>(null);
 
   const lastItemRef = useElementInViewport<HTMLButtonElement>(goToNextPage);
 
   return (
-    <ul className="dropdown-container" ref={dropdownRef}>
+    <ul className="dropdown-container">
       {inputText.trim().length > 0 && (
         <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
           {inputText}
