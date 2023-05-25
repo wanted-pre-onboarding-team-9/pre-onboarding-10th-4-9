@@ -1,3 +1,6 @@
+import { TbLoader2 } from 'react-icons/tb';
+import { RxDotsHorizontal } from 'react-icons/rx';
+
 import { useEffect } from 'react';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
@@ -5,13 +8,8 @@ import useIsElementInViewport from '../hooks/useIsElementInViewport';
 
 import '../styles/Dropdown.css';
 
-type DropdownProp = {
-  dropdownRef: React.RefObject<HTMLUListElement>;
-  children: React.ReactNode;
-};
-
-const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
-  const { suggestions, inputText, hasNext } = useSearchState();
+const Dropdown = () => {
+  const { suggestions, isLoading, inputText, hasNext } = useSearchState();
   const { goToNextPage } = useSearchDispatch();
 
   const [lastItemRef, isVisible] = useIsElementInViewport<HTMLButtonElement>();
@@ -23,9 +21,8 @@ const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
   }, [isVisible]);
 
   return (
-    <ul className="dropdown-container" ref={dropdownRef}>
+    <ul className="dropdown-container">
       {inputText.trim().length > 0 && <DropdownItem>{inputText}</DropdownItem>}
-
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
         const isLastItem = suggestions.length - 1 === idx;
@@ -40,7 +37,15 @@ const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
 
         return <DropdownItem key={id}>{suggestion}</DropdownItem>;
       })}
-      {hasNext && <li className="dropdown-indicator">{children}</li>}
+      {hasNext && (
+        <li className="dropdown-indicator">
+          {isLoading ? (
+            <TbLoader2 className="input-icon spinner" />
+          ) : (
+            <RxDotsHorizontal className="input-icon" />
+          )}
+        </li>
+      )}
     </ul>
   );
 };

@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import Header from '../components/Header';
 import InputTodo from '../components/InputTodo';
 import TodoList from '../components/TodoList';
-import { SearchContextProvider } from '../contexts/SearchContext';
 import ErrorModal from '../components/ErrorModal';
+import Dropdown from '../components/Dropdown';
 
 import { getTodoList } from '../api/todo';
+import { useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch, useErrorState } from '../contexts/ErrorContext';
 
@@ -15,6 +16,7 @@ import '../styles/Main.css';
 
 const Main = () => {
   const { changeTodos } = useTodosDispatch();
+  const { inputText } = useSearchState();
   const { hasError } = useErrorState();
   const { showError } = useErrorDispatch();
 
@@ -32,13 +34,12 @@ const Main = () => {
 
   return (
     <div className="container">
-      <SearchContextProvider>
-        <div className="inner">
-          <Header />
-          <InputTodo />
-          <TodoList />
-        </div>
-      </SearchContextProvider>
+      <div className="inner">
+        <Header />
+        <InputTodo />
+        {inputText && <Dropdown />}
+        <TodoList />
+      </div>
       {hasError && <ErrorModal />}
     </div>
   );
