@@ -5,17 +5,14 @@ import { useTodosDispatch } from '../contexts/TodoContext';
 import '../styles/DropdownItem.css';
 
 interface DropdownItemProps {
-  index: number;
   children: string;
-  isFocus: boolean;
   lastItemRef?: React.RefObject<HTMLButtonElement>;
 }
 
-const DropdownItem = ({ index, children: suggestion, isFocus, lastItemRef }: DropdownItemProps) => {
+const DropdownItem = ({ children: suggestion, lastItemRef }: DropdownItemProps) => {
   const { inputText } = useSearchState();
-  const { hoverSuggestion, inactivate, changeInputText } = useSearchDispatch();
+  const { changeInputText } = useSearchDispatch();
   const { addTodo } = useTodosDispatch();
-  const onMouseEnter = () => hoverSuggestion(index);
 
   const onClick = async () => {
     const newItem = { title: suggestion };
@@ -30,14 +27,7 @@ const DropdownItem = ({ index, children: suggestion, isFocus, lastItemRef }: Dro
   const texts = suggestion.split(keywordRegex);
 
   return (
-    <button
-      type="button"
-      ref={lastItemRef}
-      className={`dropdown-item ${isFocus ? 'active' : ''}`}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={inactivate}
-      onClick={onClick}
-    >
+    <button type="button" ref={lastItemRef} className="dropdown-item" onClick={onClick}>
       {texts.map((text, idx) => {
         const key = text + idx;
         if (keywordRegex.test(text)) {
