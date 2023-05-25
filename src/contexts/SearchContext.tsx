@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
 import useDebounce from '../hooks/useDebounce';
-import { INITIAL_PAGE_NUM } from '../components/InputTodo';
+import { INITIAL_PAGE_NUM } from '../utils/constants';
 
 const DEBOUNCE_DELAY_IN_MS = 500;
 

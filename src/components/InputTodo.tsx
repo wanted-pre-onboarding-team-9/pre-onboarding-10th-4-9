@@ -8,10 +8,9 @@ import useFocus from '../hooks/useFocus';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
+import { INITIAL_PAGE_NUM } from '../utils/constants';
 
 import '../styles/InputTodo.css';
-
-export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
   const { inputText, isLoading: isSearchLoading, currentPage } = useSearchState();
@@ -74,7 +73,9 @@ const InputTodo = () => {
           }}
           disabled={isLoading}
         />
-        {currentPage === 1 && isSearchLoading && <TbLoader2 className="input-icon spinner" />}
+        {currentPage === INITIAL_PAGE_NUM && isSearchLoading && (
+          <TbLoader2 className="input-icon spinner" />
+        )}
       </form>
     </div>
   );
