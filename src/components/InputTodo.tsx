@@ -1,25 +1,23 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AxiosError } from 'axios';
 import { TbLoader2 } from 'react-icons/tb';
 import { FiSearch } from 'react-icons/fi';
-import { RxDotsHorizontal } from 'react-icons/rx';
+
 import { createTodo } from '../api/todo';
 import useFocus from '../hooks/useFocus';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 import { useErrorDispatch } from '../contexts/ErrorContext';
-import Dropdown from './Dropdown';
 
 import '../styles/InputTodo.css';
 
 export const INITIAL_PAGE_NUM = 1;
 
 const InputTodo = () => {
-  const { inputText, isLoading: isSearchLoading, hasNext, currentPage } = useSearchState();
+  const { inputText, isLoading: isSearchLoading, currentPage } = useSearchState();
   const { changeInputText } = useSearchDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const { ref: inputRef, setFocus } = useFocus();
-  const dropdownRef = useRef<HTMLUListElement>(null);
   const { addTodo } = useTodosDispatch();
   const { showError } = useErrorDispatch();
 
@@ -29,7 +27,6 @@ const InputTodo = () => {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeInputText(e.target.value);
-    dropdownRef.current?.scrollTo(0, 0);
   };
   const handleSubmit = useCallback(
     async (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,17 +76,6 @@ const InputTodo = () => {
         />
         {currentPage === 1 && isSearchLoading && <TbLoader2 className="input-icon spinner" />}
       </form>
-
-      {inputText && (
-        <Dropdown dropdownRef={dropdownRef}>
-          {hasNext &&
-            (isSearchLoading ? (
-              <TbLoader2 className="input-icon spinner" />
-            ) : (
-              <RxDotsHorizontal className="input-icon" />
-            ))}
-        </Dropdown>
-      )}
     </div>
   );
 };

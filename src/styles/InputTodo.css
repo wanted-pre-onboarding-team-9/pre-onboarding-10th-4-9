@@ -1,7 +1,3 @@
-.input-todo-container {
-  position: relative;
-  z-index: 999;
-}
 .form-container {
   display: flex;
   width: 100%;
@@ -36,11 +32,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.input-icon {
-  color: #7d7d7d;
-  font-size: 20px;
 }
 
 .input-submit {
