@@ -6,7 +6,7 @@ import '../styles/DropdownItem.css';
 
 interface DropdownItemProps {
   children: string;
-  lastItemRef?: React.RefObject<HTMLButtonElement>;
+  lastItemRef?: (node: HTMLButtonElement) => void;
 }
 
 const DropdownItem = ({ children: suggestion, lastItemRef }: DropdownItemProps) => {

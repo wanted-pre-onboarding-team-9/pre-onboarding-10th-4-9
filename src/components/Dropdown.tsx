@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
-import useElementInViewport from '../hooks/useElementInViewport';
+import useIsElementInViewport from '../hooks/useIsElementInViewport';
 
 import '../styles/Dropdown.css';
 
@@ -13,7 +14,13 @@ const Dropdown = ({ dropdownRef, children }: DropdownProp) => {
   const { suggestions, inputText, hasNext } = useSearchState();
   const { goToNextPage } = useSearchDispatch();
 
-  const lastItemRef = useElementInViewport<HTMLButtonElement>(goToNextPage);
+  const [lastItemRef, isVisible] = useIsElementInViewport<HTMLButtonElement>();
+
+  useEffect(() => {
+    if (isVisible) {
+      goToNextPage();
+    }
+  }, [isVisible]);
 
   return (
     <ul className="dropdown-container" ref={dropdownRef}>
