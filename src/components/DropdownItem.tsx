@@ -1,4 +1,5 @@
-import { createTodo } from '../api/todo';
+import { AxiosError } from 'axios';
+import { useErrorDispatch } from '../contexts/ErrorContext';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import { useTodosDispatch } from '../contexts/TodoContext';
 
@@ -13,12 +14,19 @@ const DropdownItem = ({ children: suggestion, lastItemRef }: DropdownItemProps) 
   const { inputText } = useSearchState();
   const { changeInputText } = useSearchDispatch();
   const { addTodo } = useTodosDispatch();
+  const { showError } = useErrorDispatch();
 
   const onClick = async () => {
-    const newItem = { title: suggestion };
-    const { data } = await createTodo(newItem);
-    if (data) {
-      addTodo(data);
+    try {
+      await addTodo(suggestion);
+    } catch (error) {
+      if (error instanceof Error) {
+        showError(error.message);
+      } else {
+        const { response } = error as AxiosError;
+        showError(response?.data.message);
+      }
+    } finally {
       changeInputText('');
     }
   };
