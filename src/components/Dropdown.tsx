@@ -44,12 +44,11 @@ const Dropdown = () => {
       })}
       {hasNext && (
         <li className="dropdown-indicator">
-          {hasNext &&
-            (isLoading ? (
-              <TbLoader2 className="input-icon spinner" />
-            ) : (
-              <RxDotsHorizontal className="input-icon" />
-            ))}
+          {isLoading ? (
+            <TbLoader2 className="input-icon spinner" />
+          ) : (
+            <RxDotsHorizontal className="input-icon" />
+          )}
         </li>
       )}
     </ul>

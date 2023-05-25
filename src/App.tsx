@@ -1,8 +1,8 @@
 import './styles/App.css';
 import { ErrorContextProvider } from './contexts/ErrorContext';
+import { SearchContextProvider } from './contexts/SearchContext';
 
 import Main from './pages/Main';
-import { SearchContextProvider } from './contexts/SearchContext';
 
 const App = () => {
   return (
