@@ -1,16 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import useSuggestions from '../hooks/useSuggestions';
 import useDebounce from '../hooks/useDebounce';
-import { INITIAL_PAGE_NUM } from '../components/InputTodo';
-
-const START_ACTIVE_INDEX = -2;
+import { INITIAL_PAGE_NUM } from '../utils/constants';
 
 const DEBOUNCE_DELAY_IN_MS = 500;
 
 interface SearchState {
   inputText: string;
   suggestions: string[];
-  activeIndex: number;
   isLoading: boolean;
   hasNext: boolean;
   currentPage: number;
@@ -18,8 +15,6 @@ interface SearchState {
 
 interface SearchDispatcher {
   changeInputText: (keyword: string) => void;
-  hoverSuggestion: (itemIndex: number) => void;
-  inactivate: () => void;
   goToNextPage: () => void;
 }
 
@@ -28,14 +23,10 @@ const SearchDispatchContext = createContext<SearchDispatcher | null>(null);
 
 export const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [inputText, setInputText] = useState<string>('');
-  const [activeIndex, setActiveIndex] = useState(START_ACTIVE_INDEX);
   const [currentPage, setCurrentPage] = useState(INITIAL_PAGE_NUM);
 
   const debouncedWord = useDebounce<string>(inputText.trim(), DEBOUNCE_DELAY_IN_MS);
   const { suggestions, isLoading, hasNext } = useSuggestions(debouncedWord, currentPage);
-
-  const inactivate = () => setActiveIndex(START_ACTIVE_INDEX);
-  const hoverSuggestion = (itemIndex: number) => setActiveIndex(itemIndex);
 
   useEffect(() => {
     setCurrentPage(INITIAL_PAGE_NUM);
@@ -50,14 +41,10 @@ export const SearchContextProvider = ({ children }: { children: React.ReactNode 
   };
 
   return (
-    <SearchContext.Provider
-      value={{ inputText, activeIndex, suggestions, isLoading, hasNext, currentPage }}
-    >
+    <SearchContext.Provider value={{ inputText, suggestions, isLoading, hasNext, currentPage }}>
       <SearchDispatchContext.Provider
         value={{
           changeInputText,
-          inactivate,
-          hoverSuggestion,
           goToNextPage,
         }}
       >

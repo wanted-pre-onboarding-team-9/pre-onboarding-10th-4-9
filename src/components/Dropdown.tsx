@@ -1,44 +1,41 @@
 import { TbLoader2 } from 'react-icons/tb';
 import { RxDotsHorizontal } from 'react-icons/rx';
 
+import { useEffect } from 'react';
 import { useSearchDispatch, useSearchState } from '../contexts/SearchContext';
 import DropdownItem from './DropdownItem';
-import useElementInViewport from '../hooks/useElementInViewport';
+import useIsElementInViewport from '../hooks/useIsElementInViewport';
 
 import '../styles/Dropdown.css';
 
-const INPUTTEXT_INDEX = -1;
-
 const Dropdown = () => {
-  const { suggestions, isLoading, activeIndex, inputText, hasNext } = useSearchState();
+  const { suggestions, isLoading, inputText, hasNext } = useSearchState();
   const { goToNextPage } = useSearchDispatch();
 
-  const lastItemRef = useElementInViewport<HTMLButtonElement>(goToNextPage);
+  const [lastItemRef, isVisible] = useIsElementInViewport<HTMLButtonElement>();
+
+  useEffect(() => {
+    if (isVisible) {
+      goToNextPage();
+    }
+  }, [isVisible]);
 
   return (
     <ul className="dropdown-container">
-      {inputText.trim().length > 0 && (
-        <DropdownItem index={INPUTTEXT_INDEX} isFocus={activeIndex === INPUTTEXT_INDEX}>
-          {inputText}
-        </DropdownItem>
-      )}
+      {inputText.trim().length > 0 && <DropdownItem>{inputText}</DropdownItem>}
       {suggestions.map((suggestion, idx) => {
         const id = suggestion + idx;
-        const isFocus = activeIndex === idx;
         const isLastItem = suggestions.length - 1 === idx;
 
         if (isLastItem) {
           return (
-            <DropdownItem key={id} index={idx} isFocus={isFocus} lastItemRef={lastItemRef}>
+            <DropdownItem key={id} lastItemRef={lastItemRef}>
               {suggestion}
             </DropdownItem>
           );
         }
-        return (
-          <DropdownItem key={id} index={idx} isFocus={isFocus}>
-            {suggestion}
-          </DropdownItem>
-        );
+
+        return <DropdownItem key={id}>{suggestion}</DropdownItem>;
       })}
       {hasNext && (
         <li className="dropdown-indicator">
